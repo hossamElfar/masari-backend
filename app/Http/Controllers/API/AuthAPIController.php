@@ -29,7 +29,7 @@ class AuthAPIController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        //$this->middleware('guest', ['except' => 'logout']);
     }
 
     /**
@@ -128,9 +128,11 @@ class AuthAPIController extends Controller
         //create token
         try {
             $user = User::where('email', '=', $credentials['email'])->first();
-            $customClaims = ['type' => 'volunteer',
+            $customClaims = [
                 'id' => $user->id,
-                'email' => $user->email];
+                'email' => $user->email,
+                'role'=>$user->user_level
+            ];
             $payload = JWTFactory::make($customClaims);
             $token = JWTAuth::encode($payload);
         } catch (JWTException $e) {
