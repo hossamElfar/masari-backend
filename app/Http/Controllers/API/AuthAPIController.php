@@ -96,7 +96,7 @@ class AuthAPIController extends Controller
             return response()->json($validator->errors(), 302);
         $user= $this->create($request->all());
 
-        return response()->json(['message' => 'Thank you for registering. Kindly go to your email and follow the link to verify your account','confirmation'=>$user->code], 200);
+        return response()->json(['message' => '200 Ok','confirmation'=>$user->code], 200);
     }
 
     public function verify($token)
