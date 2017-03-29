@@ -25,23 +25,28 @@ class Authenticate
     {
         $authenticated = true;
         $token = $request->header('x-access-token');
-        if ($token) {
-            try {
-                $var = JWTAuth::decode(new Token($token));
-                $user = User::findOrFail($var['id']);
+        if($token)
+        {
+            try
+            {
+                $var= JWTAuth::decode(new Token($token));
+                $user= User::findOrFail($var['id']);
                 Auth::setUser($user);
 
-            } catch (TokenInvalidException $e) {
+            }
+            catch(TokenInvalidException $e)
+            {
                 $authenticated = false;
             }
-        } else if (Auth::guard($guard)->guest())
+        }
+        else
             $authenticated = false;
 
-        if ($authenticated)
+        if($authenticated)
             return $next($request);
-        if ($request->ajax() || $request->wantsJson())
+        if($request->ajax() || $request->wantsJson())
             return response()->json(['error' => 'Unauthorized.'], 401);
-        return redirect()->guest('login');
+         return  response()->json(['error' => 'Unauthorized.'], 401);
     }
 
 

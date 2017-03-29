@@ -27,4 +27,24 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('register/verify/{token}', 'API\AuthAPIController@verify');
     Route::post('login', 'API\AuthAPIController@login');
     Route::post('logout', 'API\AuthAPIController@logout');
+    /**
+     * View profile API
+     */
+    Route::get('profile','API\UserController@show');
+    /**
+     * Get Assessments names
+     */
+    Route::get('getAssessments','API\UserController@getAssessmentsNames');
+    /**
+     * Get a assessment's questions 
+     */
+    Route::get('getAssessment/{id}','API\UserController@getAssessment');
+    /**
+     * News resource
+     */
+    Route::resource('news','API\NewsController');
+    /**
+     * News verification by admin
+     */
+    Route::get('news/{id}','API\NewsController@verify');
 });
