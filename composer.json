@@ -10,7 +10,8 @@
         "laravel/tinker": "~1.0",
         "silber/bouncer": "v1.0.0-beta.2",
         "tymon/jwt-auth": "0.5.*",
-        "cloudinary/cloudinary_php": "dev-master"
+        "cloudinary/cloudinary_php": "dev-master",
+        "doctrine/dbal": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
