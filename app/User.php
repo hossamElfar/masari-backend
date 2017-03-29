@@ -73,7 +73,7 @@ class User extends Authenticatable
 
     public function questioners()
     {
-        return $this->hasMany('App\Questionnaire');
+        return $this->belongsTo('App\Questionnaire','questionnaires_users');
     }
 
     public function videos()

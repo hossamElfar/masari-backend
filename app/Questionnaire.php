@@ -10,6 +10,16 @@ class Questionnaire extends Model
 
     public function answers()
     {
-        return $this->belongsToMany('App\Answer','assessments_answers');
+        return $this->belongsToMany('App\Answer', 'assessments_answers');
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany('App\User', 'questionnaires_users');
+    }
+
+    public function questions()
+    {
+       return $this->hasMany('App\Question');
     }
 }

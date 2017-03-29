@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 use Bouncer;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -27,12 +28,11 @@ class Expert
             try {
                 $var = JWTAuth::decode(new Token($token));
                 $user = User::findOrFail($var['id']);
-                if (Bouncer::is($user)->an('expert')) {
+                if (Bouncer::is($user)->an('expert','admin','admin_level_1','admin_level_2')) {
                     Auth::setUser($user);
                 } else {
-                    throwException(new TokenInvalidException);
+                    $authenticated = false;
                 }
-
 
             } catch (TokenInvalidException $e) {
                 $authenticated = false;
@@ -47,6 +47,6 @@ class Expert
             return $next($request);
         if ($request->ajax() || $request->wantsJson())
             return response()->json(['error' => 'Unauthorized.'], 401);
-        return redirect()->guest('login');
+        return response()->json(['error' => 'Unauthorized.'], 401);
     }
 }
