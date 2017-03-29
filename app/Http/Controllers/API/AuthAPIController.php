@@ -128,6 +128,9 @@ class AuthAPIController extends Controller
         //create token
         try {
             $user = User::where('email', '=', $credentials['email'])->first();
+            if($user->confirmed ==0){
+                throw new JWTException;
+            }
             $customClaims = [
                 'id' => $user->id,
                 'email' => $user->email,
