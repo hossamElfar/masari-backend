@@ -27,11 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    
 
-    public function fields()
+
+    public function fileds()
     {
-        return $this->hasMany('App\Field');
+        return $this->belongsToMany('App\Field', 'fields_users');
     }
 
     public function grades()
@@ -68,12 +68,7 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Q');
     }
-
-    public function questions()
-    {
-        return $this->hasMany('App\Question');
-    }
-
+    
     public function questioners()
     {
         return $this->hasMany('App\Questionnaire');
