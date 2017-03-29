@@ -46,9 +46,21 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * News verification by admin
      */
-    Route::get('news/{id}','API\NewsController@verify');
+    Route::get('news/verify/{id}','API\NewsController@verify');
     /**
      * Videos resource
      */
     Route::resource('videos','API\VideosController');
+    /**
+     * Videos verification by admin
+     */
+    Route::get('videos/verify/{id}','API\VideosController@verify');
+    /**
+     * Links resource
+     */
+    Route::resource('links','API\LinksController');
+    /**
+     * Links verification by admin
+     */
+    Route::get('links/verify/{id}','API\LinksController@verify');
 });
