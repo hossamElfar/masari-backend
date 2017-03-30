@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Link;
 use App\News;
-use App\Video;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -69,17 +68,28 @@ class LinksController extends Controller
     public function show($id)
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Link::findOrFail($id);
+            $news = Link::find($id);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;
-            return response()->json($data, 200);
+            if ($news == null) {
+                return response()->json($data, 404);
+            } else {
+                return response()->json($data, 200);
+            }
         } else {
             $news = DB::table('links')->where('verified', true)->where('id', $id)->get()->first();
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;
-            return response()->json($data, 200);
+            if ($news == null) {
+                $data['statues'] = "404 not found";
+                $data['error'] = "Not found";
+                $data['data'] = null;
+                return response()->json($data, 404);
+            } else {
+                return response()->json($data, 200);
+            }
         }
 
     }
@@ -95,7 +105,7 @@ class LinksController extends Controller
     public function update(Request $request, $id)
     {
         $t = $request->all();
-        $news = Link::findOrFail($id);
+        $news = Link::find($id);
         if ($news->user_id != Auth::user_id && Bouncer::is(Auth::user())->notAn('admin')) {
             $data['statues'] = "401 unauthorized";
             $data['error'] = "UnAuthorized";
@@ -103,11 +113,19 @@ class LinksController extends Controller
             return response()->json($data, 401);
         }
         $t->user_id = Auth::user()->id;
-        $news->update($request);
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data']['links'] = $news;
-        return response()->json($data, 200);
+        if ($news == null) {
+            $data['statues'] = "404 not found";
+            $data['error'] = "Not found";
+            $data['data'] = null;
+            return response()->json($data, 404);
+        } else {
+            $news->update($request);
+            $data['statues'] = "200 Ok";
+            $data['error'] = null;
+            $data['data']['links'] = $news;
+            return response()->json($data, 200);
+        }
+
     }
 
     /**
@@ -118,18 +136,26 @@ class LinksController extends Controller
      */
     public function destroy($id)
     {
-        $news = Link::findOrFail($id);
+        $news = Link::find($id);
         if ($news->user_id != Auth::user_id && Bouncer::is(Auth::user())->notAn('admin')) {
             $data['statues'] = "401 unauthorized";
             $data['error'] = "UnAuthorized";
             $data['data'] = null;
             return response()->json($data, 401);
         }
-        $news->destroy();
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data'] = null;
-        return response()->json($data, 200);
+        if ($news == null) {
+            $data['statues'] = "404 not found";
+            $data['error'] = "Not found";
+            $data['data'] = null;
+            return response()->json($data, 404);
+        } else {
+            $news->destroy();
+            $data['statues'] = "200 Ok";
+            $data['error'] = null;
+            $data['data'] = null;
+            return response()->json($data, 200);
+        }
+
     }
 
     /**
@@ -140,11 +166,19 @@ class LinksController extends Controller
      */
     public function verify($id)
     {
-        $news = Link::findOrFail($id);
-        $news->verified = true;
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data'] = $news;
-        return response()->json($data, 200);
+        $news = Link::find($id);
+        if ($news == null) {
+            $data['statues'] = "404 not found";
+            $data['error'] = "Not found";
+            $data['data'] = null;
+            return response()->json($data, 404);
+        } else {
+            $news->verified = true;
+            $data['statues'] = "200 Ok";
+            $data['error'] = null;
+            $data['data'] = $news;
+            return response()->json($data, 200);
+        }
+
     }
 }
