@@ -30,37 +30,46 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * View profile API
      */
-    Route::get('profile','API\UserController@show');
+    Route::get('profile', 'API\UserController@show');
     /**
      * Get Assessments names
      */
-    Route::get('getAssessments','API\UserController@getAssessmentsNames');
+    Route::get('getAssessments', 'API\UserController@getAssessmentsNames');
     /**
-     * Get a assessment's questions 
+     * Get a assessment's questions
      */
-    Route::get('getAssessment/{id}','API\UserController@getAssessment');
+    Route::get('getAssessment/{id}', 'API\UserController@getAssessment');
     /**
      * News resource
      */
-    Route::resource('news','API\NewsController');
+    Route::resource('news', 'API\NewsController');
     /**
      * News verification by admin
      */
-    Route::get('news/verify/{id}','API\NewsController@verify');
+    Route::get('news/verify/{id}', 'API\NewsController@verify');
     /**
      * Videos resource
      */
-    Route::resource('videos','API\VideosController');
+    Route::resource('videos', 'API\VideosController');
     /**
      * Videos verification by admin
      */
-    Route::get('videos/verify/{id}','API\VideosController@verify');
+    Route::get('videos/verify/{id}', 'API\VideosController@verify');
     /**
      * Links resource
      */
-    Route::resource('links','API\LinksController');
+    Route::resource('links', 'API\LinksController');
     /**
      * Links verification by admin
      */
-    Route::get('links/verify/{id}','API\LinksController@verify');
+    Route::get('links/verify/{id}', 'API\LinksController@verify');
+    /**
+     * Messages resource
+     */
+    Route::resource('messages', 'API\MessagesController');
+    /**
+     * Send message in a thread
+     */
+    Route::post('messages/thread/{id}','API\MessagesController@sendMessage');
+
 });

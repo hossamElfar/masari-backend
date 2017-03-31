@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Link;
-use App\News;
 use App\Video;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

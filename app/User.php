@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
-
+use Cmgmyr\Messenger\Traits\Messagable;
 class User extends Authenticatable
 {
     use HasRolesAndAbilities;
     use Notifiable;
+    use Messagable;
 
     /**
      * The attributes that are mass assignable.

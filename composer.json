@@ -11,7 +11,8 @@
         "silber/bouncer": "v1.0.0-beta.2",
         "tymon/jwt-auth": "0.5.*",
         "cloudinary/cloudinary_php": "dev-master",
-        "doctrine/dbal": "*"
+        "doctrine/dbal": "*",
+        "cmgmyr/messenger": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
