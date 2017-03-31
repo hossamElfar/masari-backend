@@ -30,8 +30,8 @@ class MessagesController extends Controller
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($threads as $thread) {
-            $last_message = $thread->messages()->latest('updated_at')->first()->get();
-            $thread['subject'] = $last_message;
+            $last_message = $thread->messages()->latest('updated_at')->first()->get()[0]->body;
+            $thread['last_message'] = $last_message;
         }
         $data['data']['threads'] = $threads;
         return response()->json($data, 200);
