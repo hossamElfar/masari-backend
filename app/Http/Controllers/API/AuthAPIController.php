@@ -101,7 +101,7 @@ class AuthAPIController extends Controller
 
     public function verify($token)
     {
-        $user = User::where('confirmation_code', '=', $token)->first();
+        $user = User::where('code', '=', $token)->first();
         if ($user) {
             $user->confirmed = true;
             $user->save();
@@ -128,7 +128,7 @@ class AuthAPIController extends Controller
         //create token
         try {
             $user = User::where('email', '=', $credentials['email'])->first();
-            if($user->confirmed ==0){
+            if($user->confirmed == 0){
                 throw new JWTException;
             }
             $customClaims = [
@@ -140,6 +140,7 @@ class AuthAPIController extends Controller
             $token = JWTAuth::encode($payload);
         } catch (JWTException $e) {
             // something went wrong
+            dd($e);
             return response()->json(['error' => 'Could not create token'], 500);
         }
 

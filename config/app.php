@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Silber\Bouncer\BouncerServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Cmgmyr\Messenger\MessengerServiceProvider::class,
     ],
 
     /*
