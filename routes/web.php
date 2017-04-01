@@ -77,5 +77,12 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::post('messages/thread/{id}', 'API\MessagesController@sendMessage');
 
-
+    /**
+     * Programmes resource
+     */
+    Route::resource('programs', 'API\ProgrammesController');
+    /**
+     * Programmes verification by admin
+     */
+    Route::get('programs/verify/{id}', 'API\LinksController@verify');
 });

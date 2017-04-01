@@ -70,5 +70,16 @@ $factory->define(App\Link::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Program::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'description' => $faker->sentence,
+        'from' => $faker->date(),
+        'to'=> $faker->date(),
+        'verified' => true,
+        'user_id' =>1
+    ];
+});
+
 
 
