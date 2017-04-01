@@ -69,12 +69,6 @@ class AuthAPIController extends Controller
     {
         $confirmation_code_init = str_random(5);
         $confirmation_code = strtolower($confirmation_code_init);
-        $users = User::all();
-        foreach ($users as $user) {
-            if ($user->confirmation_code) {
-
-            }
-        }
         Mail::send('auth.email.verify', ['confirmation_code' => $confirmation_code, 'name' => $data['first_name']], function ($message) use ($data) {
             $message->to($data['email'], $data['first_name'])
                 ->subject('Verify your email address');
@@ -95,7 +89,6 @@ class AuthAPIController extends Controller
             $this->create($data);
         }
         return $user;
-
     }
 
     public function register(Request $request)
