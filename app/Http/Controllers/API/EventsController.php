@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Event;
+use App\Field;
 use App\Program;
+use App\User;
 use App\Video;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Bouncer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class EventsController extends Controller
 {
@@ -182,4 +185,6 @@ class EventsController extends Controller
         }
 
     }
+
+  
 }

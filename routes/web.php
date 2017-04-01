@@ -86,7 +86,6 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('programs/verify/{id}', 'API\ProgrammesController@verify');
 
-
     /**
      * Events resource
      */
@@ -95,4 +94,12 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Events verification by admin
      */
     Route::get('events/verify/{id}', 'API\EventsController@verify');
+    /**
+     * Get experts
+     */
+    Route::get('users/experts', 'API\UserController@experts');
+    /**
+     * Get all fields
+     */
+    Route::get('/users/experts/fields','API\UserController@getFields');
 });

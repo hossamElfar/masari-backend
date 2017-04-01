@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Field;
 use App\Questionnaire;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Input;
+use Bouncer;
 class UserController extends Controller
 {
     public function __construct()
@@ -87,5 +90,51 @@ class UserController extends Controller
     {
         $data = $request->all();
         return $data;
+    }
+    /**
+     * Get experts .
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function experts()
+    {
+        $query = Input::get('field');
+        $returned = array();
+        if ($query == 'all') {
+            $users = User::all();
+            //$returned = null;
+            foreach ($users as $user) {
+                if (Bouncer::is($user)->a('expert')) {
+                    $user['fields'] = $user->fileds()->get();
+                    array_push($returned, $user);
+                }
+            }
+        } else {
+            $field = Field::findOrFail($query);
+            $users = $field->users();
+            foreach ($users as $user) {
+                $user['fields'] = $user->fileds()->get();
+                array_push($returned, $user);
+            }
+        }
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data']['experts'] = $returned;
+        return response()->json($data, 200);
+
+    }
+
+    /**
+     * Get fields.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getFields()
+    {
+        $fields = Field::all();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = $fields;
+        return response()->json($data, 200);
     }
 }

@@ -94,4 +94,11 @@ $factory->define(App\Event::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Field::class, function (Faker\Generator $faker) {
+    $random = ['sports','tech','politics'];
+    return [
+        'field_name'=>$random[array_rand($random,1)]
+    ];
+});
+
 
