@@ -81,5 +81,17 @@ $factory->define(App\Program::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Event::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'description' => $faker->sentence,
+        'venue' => $faker->city,
+        'start'=>\Carbon\Carbon::now(),
+        'end'=>\Carbon\Carbon::now()->addHours(3),
+        'date'=> $faker->date(),
+        'verified' => true,
+        'user_id' =>1
+    ];
+});
 
 

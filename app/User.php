@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 use Cmgmyr\Messenger\Traits\Messagable;
+
 class User extends Authenticatable
 {
     use HasRolesAndAbilities;
@@ -74,11 +75,16 @@ class User extends Authenticatable
 
     public function questioners()
     {
-        return $this->belongsTo('App\Questionnaire','questionnaires_users');
+        return $this->belongsTo('App\Questionnaire', 'questionnaires_users');
     }
 
     public function videos()
     {
         return $this->hasMany('App\Video');
+    }
+
+    public function events()
+    {
+        return $this->hasMany('App\Event');
     }
 }

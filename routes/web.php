@@ -84,5 +84,15 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Programmes verification by admin
      */
-    Route::get('programs/verify/{id}', 'API\LinksController@verify');
+    Route::get('programs/verify/{id}', 'API\ProgrammesController@verify');
+
+
+    /**
+     * Events resource
+     */
+    Route::resource('events', 'API\EventsController');
+    /**
+     * Events verification by admin
+     */
+    Route::get('events/verify/{id}', 'API\EventsController@verify');
 });
