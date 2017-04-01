@@ -27,6 +27,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('register/verify/{token}', 'API\AuthAPIController@verify');
     Route::post('login', 'API\AuthAPIController@login');
     Route::post('logout', 'API\AuthAPIController@logout');
+    Route::post('update', 'API\AuthAPIController@update');
     /**
      * View profile API
      */
@@ -39,6 +40,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get a assessment's questions
      */
     Route::get('getAssessment/{id}', 'API\UserController@getAssessment');
+    /**
+     * Post assessment score
+     */
+    Route::post('assessment', 'API\UserController@storeAssessment');
     /**
      * News resource
      */
@@ -70,6 +75,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Send message in a thread
      */
-    Route::post('messages/thread/{id}','API\MessagesController@sendMessage');
+    Route::post('messages/thread/{id}', 'API\MessagesController@sendMessage');
+
 
 });

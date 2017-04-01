@@ -30,6 +30,7 @@ class AuthAPIController extends Controller
     public function __construct()
     {
         //$this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('auth')->only('update');
     }
 
     /**
@@ -46,6 +47,15 @@ class AuthAPIController extends Controller
             'phone' => 'required|max:20',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+        ]);
+    }
+    protected function validatorUpdate(array $data)
+    {
+        return Validator::make($data, [
+            'first_name' => 'max:255',
+            'second_name' => 'max:255',
+            'phone' => 'max:20|unique:users',
+            'email' => 'email|max:255|unique:users'
         ]);
     }
 
@@ -78,7 +88,7 @@ class AuthAPIController extends Controller
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'code' => $confirmation_code,
-                'user_level'=>"0",
+                'user_level' => "0",
                 'confirmed' => false
             ]);
         } catch (Exception $e) {
@@ -94,9 +104,9 @@ class AuthAPIController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors(), 302);
-        $user= $this->create($request->all());
+        $user = $this->create($request->all());
 
-        return response()->json(['message' => '200 Ok','confirmation'=>$user->code], 200);
+        return response()->json(['message' => '200 Ok', 'confirmation' => $user->code], 200);
     }
 
     public function verify($token)
@@ -128,13 +138,13 @@ class AuthAPIController extends Controller
         //create token
         try {
             $user = User::where('email', '=', $credentials['email'])->first();
-            if($user->confirmed == 0){
+            if ($user->confirmed == 0) {
                 throw new JWTException;
             }
             $customClaims = [
                 'id' => $user->id,
                 'email' => $user->email,
-                'role'=>$user->user_level
+                'role' => $user->user_level
             ];
             $payload = JWTFactory::make($customClaims);
             $token = JWTAuth::encode($payload);
@@ -161,5 +171,25 @@ class AuthAPIController extends Controller
             return response()->json(['message' => 'invalid token'], 200);
         }
         return response()->json(['message' => 'Logged out.'], 200);
+    }
+
+    /**
+     * Update profile
+     */
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        $t = $request->intersect(['first_name', 'second_name', 'phone', 'country', 'city', 'age', 'gender', 'pp' ]);
+       // dd($t);
+        //$t = $request->all();
+        $validator = $this->validatorUpdate($t);
+        if ($validator->fails())
+            return response()->json($validator->errors(), 400);
+        $user->update($t);
+        $user->save();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = $user;
+        return response()->json($data, 200);
     }
 }
