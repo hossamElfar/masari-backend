@@ -22,3 +22,53 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\News::class, function (Faker\Generator $faker) {
+    return [
+        'content' => $faker->name,
+        'title' => $faker->title,
+        'verified' => true,
+        'user_id' =>1
+    ];
+});
+$factory->define(App\Questionnaire::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'no_of_questions'=> 20
+    ];
+});
+$factory->define(App\Question::class, function (Faker\Generator $faker) {
+    return [
+        'question_content' => $faker->sentence,
+        'category'=> $faker->title,
+        'no_of_answers'=>4
+    ];
+});
+$factory->define(App\Answer::class, function (Faker\Generator $faker) {
+    return [
+        'answer_content' => $faker->sentence,
+        'points'=> $faker->numberBetween(1,10)
+
+    ];
+});
+$factory->define(App\Video::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'note' => $faker->sentence,
+        'link' => "http://www.".$faker->word.".com",
+        'verified' => true,
+        'user_id' =>1
+    ];
+});
+$factory->define(App\Link::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->title,
+        'description' => $faker->sentence,
+        'link' => "http://www.".$faker->word.".com",
+        'verified' => true,
+        'user_id' =>1
+    ];
+});
+
+
+

@@ -12,7 +12,8 @@
         "tymon/jwt-auth": "0.5.*",
         "cloudinary/cloudinary_php": "dev-master",
         "doctrine/dbal": "*",
-        "cmgmyr/messenger": "~2.0"
+        "cmgmyr/messenger": "~2.0",
+        "fzaninotto/faker": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
