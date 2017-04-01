@@ -111,7 +111,7 @@ class UserController extends Controller
             }
         } else {
             $field = Field::findOrFail($query);
-            $users = $field->user();
+            $users = $field->user()->get();
             foreach ($users as $user) {
                 $user['fields'] = $user->fileds()->get();
                 array_push($returned, $user);
