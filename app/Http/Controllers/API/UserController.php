@@ -36,10 +36,26 @@ class UserController extends Controller
      */
     public function getAssessmentsNames()
     {
+        $user = Auth::user();
+        $user_assessments = $user->questioners()->get();
         $assessments = DB::table('questionnaires')->select('name', 'id')->get();
+        $flag = false;
+        $returned = array();
+        foreach ($assessments as $assessment) {
+            $flag = false;
+            foreach ($user_assessments as $user_assessment) {
+                if ($assessment->id == $user_assessment) {
+                    $flag = true;
+                    break;
+                }
+            }
+            if (!$flag) {
+                array_push($returned, $assessment);
+            }
+        }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        $data['data']['assessments'] = $assessments;
+        $data['data']['assessments'] = $returned;
         return $data;
     }
 
@@ -51,14 +67,25 @@ class UserController extends Controller
     public function getAssessment($id)
     {
         $assessment = Questionnaire::findOrFail($id);
-        $questions = $assessment->questions()->paginate(1);
+        $questions = $assessment->questions()->paginate(5);
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($questions as $question) {
             $answers = $question->answers()->get();
-            $question['answers']=$answers;
+            $question['answers'] = $answers;
         }
-        $data['data']['questions']=$questions;
+        $data['data']['questions'] = $questions;
+        return $data;
+    }
+
+    /**
+     * Store assessment score
+     * @param Request $request
+     * @return mixed
+     */
+    public function storeAssessment(Request $request)
+    {
+        $data = $request->all();
         return $data;
     }
 }

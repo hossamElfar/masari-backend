@@ -33,7 +33,7 @@ class LinksController extends Controller
             $data['data']['links'] = $news;
             return response()->json($data, 200);
         } else {
-            $news = DB::table('links')->where('verified', true)->paginate(3);
+            $news = DB::table('links')->where('verified', true)->paginate(10);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;
