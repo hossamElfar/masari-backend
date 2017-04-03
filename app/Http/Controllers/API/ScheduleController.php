@@ -54,9 +54,9 @@ class ScheduleController extends Controller
             array_push($returned, $data);
             $timings_free = [];
         }
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data']['timings'] = $returned;
-        return response()->json($data, 200);
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $returned;
+        return response()->json($data1, 200);
     }
 }
