@@ -52,7 +52,7 @@ class LinksController extends Controller
         $t = $request->all();
         $t['verified'] = false;
         $t['user_id'] = Auth::user()->id;
-        $news = new News($t);
+        $news = new Link($t);
         $news['verified']=false;
         $news['user_id'] = Auth::user()->id;
         $news->save();
