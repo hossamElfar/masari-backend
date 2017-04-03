@@ -26,13 +26,13 @@ class VideosController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Video::all();
+            $news = Video::all()->orderBy('created_at','desc');
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['videos'] = $news;
             return response()->json($data, 200);
         } else {
-            $news = DB::table('videos')->where('verified', true)->paginate(3);
+            $news = DB::table('videos')->where('verified', true)->orderBy('created_at','desc')->paginate(3);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['videos'] = $news;

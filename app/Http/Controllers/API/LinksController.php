@@ -27,13 +27,13 @@ class LinksController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Link::all();
+            $news = Link::all()->orderBy('created_at','desc');
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;
             return response()->json($data, 200);
         } else {
-            $news = DB::table('links')->where('verified', true)->paginate(10);
+            $news = DB::table('links')->where('verified', true)->orderBy('created_at','desc')->paginate(10);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;

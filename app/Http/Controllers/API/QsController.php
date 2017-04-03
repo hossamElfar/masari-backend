@@ -24,7 +24,7 @@ class QsController extends Controller
      */
     public function index()
     {
-        $news = Q::paginate(5);
+        $news = Q::paginate(5)->orderBy('created_at','desc');
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($news as $question) {
