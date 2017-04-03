@@ -100,7 +100,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Get all fields
      */
-    Route::get('/users/experts/fields','API\UserController@getFields');
+    Route::get('/users/experts/fields', 'API\UserController@getFields');
     /**
      * Qs resource
      */
@@ -108,14 +108,18 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Posting answers
      */
-    Route::post('qs/{id}','API\QsController@addAnswer');
+    Route::post('qs/{id}', 'API\QsController@addAnswer');
     /**
      * Updating answers
      */
-    Route::post('qs/update/{answer_id}','API\QsController@updateAnswer');
+    Route::post('qs/update/{answer_id}', 'API\QsController@updateAnswer');
     /**
      * Getting the experts os a certain field in the user's country
      */
-    Route::get('experts/{field_id}','API\ScheduleController@getExperts');
+    Route::get('experts/{field_id}', 'API\ScheduleController@getExperts');
+    /**
+     * Request a schedule meeting to an expert
+     */
+    Route::post('experts/{timing_id}','API\ScheduleController@reserveExpert');
 
 });

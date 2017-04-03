@@ -92,4 +92,13 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Timing');
     }
+
+    public function request_client()
+    {
+        return $this->hasMany('App\Request','client_id');
+    }
+    public function request_expert()
+    {
+        return $this->hasMany('App\Request','expert_id');
+    }
 }

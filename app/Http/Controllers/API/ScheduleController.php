@@ -13,7 +13,7 @@ class ScheduleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('getExperts');
+        $this->middleware('auth')->only('getExperts','reserveExpert');
         //$this->middleware('expert')->only('store', 'update', 'destroy');
         //$this->middleware('admin')->only('verify');
     }
@@ -58,5 +58,18 @@ class ScheduleController extends Controller
         $data1['error'] = null;
         $data1['data']['timings'] = $returned;
         return response()->json($data1, 200);
+    }
+
+    public function reserveExpert($timing_id)
+    {
+        $timing = Timing::findOrFail($timing_id);
+        $expert = $timing->expert()->get()[0];
+        $user = Auth::user();
+        $request = new \App\Request(['expert_id'=>$expert->id,'client_id'=>$user->id,'timing_id'=>$timing->id,'reserved'=>false,'accepted'=>false]);
+        $request->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1,200);
     }
 }
