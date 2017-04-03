@@ -27,7 +27,7 @@ class LinksController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Link::all()->orderBy('created_at','desc');
+            $news = Link::paginate(3)->sortByDesc('created_at');
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['links'] = $news;
