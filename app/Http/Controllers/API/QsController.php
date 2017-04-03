@@ -46,9 +46,9 @@ class QsController extends Controller
     {
         $t = $request->all();
         $t['verified'] = false;
-        $t['user_id'] = Auth::user()->id;
+        //$t['user_id'] = Auth::user()->id;
         $news = new Q($t);
-        $news['verified']=false;
+        //$news['verified']=false;
         $news['user_id'] = Auth::user()->id;
         $news->save();
         $data['statues'] = "200 Ok";

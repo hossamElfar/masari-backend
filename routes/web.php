@@ -113,5 +113,9 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Updating answers
      */
     Route::post('qs/update/{answer_id}','API\QsController@updateAnswer');
+    /**
+     * Getting the experts os a certain field in the user's country
+     */
+    Route::get('experts/{field_id}','API\ScheduleController@getExperts');
 
 });
