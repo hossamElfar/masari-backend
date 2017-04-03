@@ -48,6 +48,8 @@ class QsController extends Controller
         $t['verified'] = false;
         $t['user_id'] = Auth::user()->id;
         $news = new Q($t);
+        $news['verified']=false;
+        $news['user_id'] = Auth::user()->id;
         $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
