@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'first_name', 'email', 'password', 'second_name', 'phone', 'code', 'country', 'city', 'age', 'gender', 'pp',
-        'pp', 'user_level','field_id'
+        'pp', 'user_level', 'field_id'
     ];
 
     /**
@@ -86,5 +86,10 @@ class User extends Authenticatable
     public function events()
     {
         return $this->hasMany('App\Event');
+    }
+
+    public function timings()
+    {
+        return $this->hasMany('App\Timing');
     }
 }
