@@ -30,7 +30,7 @@ class QsController extends Controller
         foreach ($news as $question) {
             $answers = $question->answers()->count();
             $question['no_of_answers'] = $answers;
-            $question['asked_by'] = $question->user()->get();
+            $question['asked_by'] = $question->user()->get()[0];
         }
         $data['data']['questions'] = $news;
         return response()->json($data, 200);
@@ -48,6 +48,7 @@ class QsController extends Controller
         $t['verified'] = false;
         $t['user_id'] = Auth::user()->id;
         $news = new Q($t);
+        $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['question'] = $news;
@@ -151,6 +152,7 @@ class QsController extends Controller
         $t['verified'] = false;
         $t['user_id'] = Auth::user()->id;
         $answer = new A($t);
+        $answer->save();
         $question = Q::findOrFail($id);
         $question->answers()->save($answer);
         $data['statues'] = "200 Ok";
