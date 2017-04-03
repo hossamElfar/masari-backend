@@ -64,6 +64,7 @@ class QsController extends Controller
     public function show($id)
     {
         $news = Q::find($id);
+        $news['asked_by']= $news->user()->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $answers = $news->answers()->get();

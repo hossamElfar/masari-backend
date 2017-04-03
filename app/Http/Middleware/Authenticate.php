@@ -29,7 +29,7 @@ class Authenticate
             try {
                 $var = JWTAuth::decode(new Token($token));
                 $user = User::findOrFail($var['id']);
-                dd($user->getAbilities());
+//                dd($user->getAbilities());
 
                 Auth::setUser($user);
 
