@@ -101,4 +101,18 @@ $factory->define(App\Field::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Q::class, function (Faker\Generator $faker) {
+    return [
+        'question'=> $faker->sentence().' ?',
+        'user_id'=> 1
+    ];
+});
+$factory->define(App\A::class, function (Faker\Generator $faker) {
+    return [
+        'answer'=> $faker->sentence(),
+        'verified'=>true,
+        'user_id'=>1
+    ];
+});
+
 

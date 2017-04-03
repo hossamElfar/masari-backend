@@ -76,7 +76,6 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Send message in a thread
      */
     Route::post('messages/thread/{id}', 'API\MessagesController@sendMessage');
-
     /**
      * Programmes resource
      */
@@ -102,4 +101,17 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get all fields
      */
     Route::get('/users/experts/fields','API\UserController@getFields');
+    /**
+     * Qs resource
+     */
+    Route::resource('qs', 'API\QsController');
+    /**
+     * Posting answers
+     */
+    Route::post('qs/{id}','API\QsController@addAnswer');
+    /**
+     * Updating answers
+     */
+    Route::post('qs/update/{answer_id}','API\QsController@updateAnswer');
+
 });
