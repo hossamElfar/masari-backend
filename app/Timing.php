@@ -11,6 +11,6 @@ class Timing extends Model
 
     public function expert()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
 }

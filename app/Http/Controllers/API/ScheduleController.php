@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Field;
+use App\Timing;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,16 +26,37 @@ class ScheduleController extends Controller
      */
     public function getExperts($field_id)
     {
-        $auth_user = Auth::user();
-        $field = Field::findOrFail($field_id);
-        $users = $field->user()->where(['country' => $auth_user->country, 'city' => $auth_user->city])->get();
-        foreach ($users as $user) {
-            $user['timings'] = $user->timings()->get();
+        $day = Carbon::now();
+        $days = array();
+        $dates = array();
+        $experts = array();
+        $timings_free = array();
+        $returned = array();
+        for ($date = Carbon::now(); $date->lte(Carbon::now()->addDays(6)); $date->addDay()) {
+            array_push($dates, $date->format('Y-m-d'));
+        }
+        // dd($dates);
+        $timings = Timing::all();
+
+        foreach ($dates as $date) {
+            foreach ($timings as $timing) {
+                $date_temp = Carbon::parse($date)->format('Y-m-d');
+                // dd($timing);
+                $timing_temp = Carbon::parse($timing->timing)->format('Y-m-d');
+                if ($date_temp == $timing_temp) {
+                    $expert = $timing->expert()->get()[0];
+                    $timing['expert'] = $expert;
+                    array_push($timings_free, $timing);
+                }
+            }
+            $data['date'] = $date;
+            $data['timings'] = $timings_free;
+            array_push($returned, $data);
+            $timings_free = [];
         }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        $data['data']['field'] = $field;
-        $data['data']['experts'] = $users;
+        $data['data']['timings'] = $returned;
         return response()->json($data, 200);
     }
 }
