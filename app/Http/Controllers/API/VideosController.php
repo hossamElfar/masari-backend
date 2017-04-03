@@ -49,9 +49,10 @@ class VideosController extends Controller
     public function store(Request $request)
     {
         $t = $request->all();
-        $t->verified = false;
-        $t->user_id = Auth::user()->id;
+        $t['verified'] = false;
+        $t['user_id'] = Auth::user()->id;
         $news = new Video($t);
+        $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['video'] = $news;

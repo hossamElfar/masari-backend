@@ -54,9 +54,10 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $t = $request->all();
-        $t->verified = false;
-        $t->user_id = Auth::user()->id;
+        $t['verified'] = false;
+        $t['user_id'] = Auth::user()->id;
         $news = new Event($t);
+        $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['event'] = $news;

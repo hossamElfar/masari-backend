@@ -49,9 +49,10 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $t = $request->all();
-        $t->verified = false;
-        $t->user_id = Auth::user()->id;
+        $t['verified'] = false;
+        $t['user_id'] = Auth::user()->id;
         $news = new News($t);
+        $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['news'] = $news;
