@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 //use App\Message;
+use App\User;
 use Carbon\Carbon;
 use Cmgmyr\Messenger\Models\Participant;
 use Cmgmyr\Messenger\Models\Message;
@@ -32,6 +33,7 @@ class MessagesController extends Controller
         foreach ($threads as $thread) {
             $last_message = $thread->messages()->orderBy('created_at','desc')->get()[0]->body;
             $thread['last_message'] = $last_message;
+            $thread['last_sender']= User::find($thread->messages()->orderBy('created_at','desc')->get()[0]->user_id);
         }
         $data['data']['threads'] = $threads;
         return response()->json($data, 200);

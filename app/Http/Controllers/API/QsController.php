@@ -25,14 +25,14 @@ class QsController extends Controller
      */
     public function index()
     {
-        $news =DB::table('qs')->orderBy('created_at','desc')->paginate(3);
+        $news =DB::table('qs')->orderBy('created_at','desc')->paginate(3)->toArray();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        foreach ($news as $question) {
-            $question= Q::find($question->id);
-            $answers = $question->answers()->count();
-            $question['no_of_answers'] = $answers;
-            $question['asked_by'] = $question->user()->get()[0];
+        foreach ($news['data'] as $question) {
+            $question1= Q::find($question->id);
+            $answers = $question1->answers()->count();
+            $question->no_of_answers = $answers;
+            $question->asked_by = $question1->user()->get();
         }
         $data['data']['questions'] = $news;
         return response()->json($data, 200);
