@@ -121,5 +121,20 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Request a schedule meeting to an expert
      */
     Route::post('experts/{timing_id}','API\ScheduleController@reserveExpert');
-
+    /**
+     * Posting a timing
+     */
+    Route::post('experts/add/timing','API\ScheduleController@addTiming');
+    /**
+     * Get a list of requested timings
+     */
+    Route::get('experts/get/requested','API\ScheduleController@requestedTiming');
+    /**
+     * Get a list of approved timings
+     */
+    Route::get('experts/get/approved','API\ScheduleController@approvedTiming');
+    /**
+     * Get a list of approved timings
+     */
+    Route::get('experts/approve/{request_id}','API\ScheduleController@approveTiming');
 });

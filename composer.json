@@ -13,7 +13,8 @@
         "cloudinary/cloudinary_php": "dev-master",
         "doctrine/dbal": "*",
         "cmgmyr/messenger": "~2.0",
-        "fzaninotto/faker": "*"
+        "fzaninotto/faker": "*",
+        "felixkiss/uniquewith-validator": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

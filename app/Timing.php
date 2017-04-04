@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timing extends Model
 {
+    protected $fillable =['timing','user_id','reserved'];
     protected $table = 'timings';
     protected $dates = ['timing'];
 

@@ -8,14 +8,23 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use \Validator;
 
 class ScheduleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('getExperts','reserveExpert');
-        //$this->middleware('expert')->only('store', 'update', 'destroy');
+        $this->middleware('auth')->only('getExperts', 'reserveExpert');
+        $this->middleware('expert')->only('addTiming', 'requestedTiming','approvedTiming','approveTiming');
         //$this->middleware('admin')->only('verify');
+    }
+
+    protected function validator(array $data)
+    {
+        //dd($data);
+        return Validator::make($data, [
+            'client_id' => 'unique_with:requests,expert_id,timing_id'
+        ]);
     }
 
     /**
@@ -60,16 +69,101 @@ class ScheduleController extends Controller
         return response()->json($data1, 200);
     }
 
+    /**
+     * Request to reserve a timing with an expert
+     *
+     * @param $timing_id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function reserveExpert($timing_id)
     {
         $timing = Timing::findOrFail($timing_id);
         $expert = $timing->expert()->get()[0];
         $user = Auth::user();
-        $request = new \App\Request(['expert_id'=>$expert->id,'client_id'=>$user->id,'timing_id'=>$timing->id,'reserved'=>false,'accepted'=>false]);
+        $request = new \App\Request(['expert_id' => $expert->id, 'client_id' => $user->id, 'timing_id' => $timing->id, 'reserved' => false, 'accepted' => false]);
+        $validator = $this->validator($request->toArray());
+
+        if ($validator->fails())
+            return response()->json($validator->errors(), 302);
         $request->save();
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
-        return response()->json($data1,200);
+        return response()->json($data1, 200);
+    }
+
+    /**
+     * Add a timing
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function addTiming(Request $request)
+    {
+        $data = $request->all();
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
+        $data['reserved'] = false;
+        $timing = new Timing($data);
+        $timing->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = $timing;
+        return $data1;
+    }
+
+    /**
+     * Get the requested timings
+     *
+     * @return mixed
+     */
+    public function requestedTiming()
+    {
+        $user = Auth::user();
+        $requested_timings = $user->request_expert()->where('reserved', '!=', true)->get();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $requested_timings;
+        return $data1;
+    }
+
+    /**
+     * Get the approved timings
+     *
+     * @return mixed
+     */
+    public function approvedTiming()
+    {
+        $user = Auth::user();
+        $approved_timings = $user->request_expert()->where('reserved', true)->get();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $approved_timings;
+        return $data1;
+    }
+
+    /**
+     * Approve a request
+     * 
+     * @param $request_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function approveTiming($request_id)
+    {
+        $request = \App\Request::findOrFail($request_id);
+        if ($request->reserved == true) {
+            $data1['statues'] = "302";
+            $data1['error'] = "Already reserved";
+            $data1['data'] = null;
+            return response()->json($data1, 302);
+        } else {
+            $request->reserved = true;
+            $request->accepted = true;
+            $request->save();
+            $data1['statues'] = "200 Ok";
+            $data1['error'] = null;
+            $data1['data']['request'] = $request;
+            return response()->json($data1, 200);
+        }
     }
 }

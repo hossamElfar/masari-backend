@@ -179,6 +179,7 @@ return [
         Silber\Bouncer\BouncerServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
     ],
 
     /*
