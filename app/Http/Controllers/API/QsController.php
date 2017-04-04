@@ -73,7 +73,7 @@ class QsController extends Controller
         $data['error'] = null;
         $answers = $news->answers()->get();
         foreach ($answers as $answer) {
-            $answer['answered_by']= $answer->user()->get();
+            $answer['answered_by']= $answer->user()->get()[0];
         }
         $news['answers'] = $answers;
         $data['data']['question'] = $news;
