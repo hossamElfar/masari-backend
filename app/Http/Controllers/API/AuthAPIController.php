@@ -109,8 +109,44 @@ class AuthAPIController extends Controller
         $user = User::where('code', '=', $token)->first();
         if ($user) {
             $user->confirmed = true;
-            $user->save();
-            return response()->json(['message' => 'Ok'], 200);
+            try {
+                $role = "";
+                if (Bouncer::is($user)->an('client')) {
+                    $role = "client";
+                }
+                if (Bouncer::is($user)->an('expert')) {
+                    $role = "expert";
+                }
+                if (Bouncer::is($user)->an('ladmin')) {
+                    $role = "ladmin";
+                }
+
+                if (Bouncer::is($user)->an('hadmin')) {
+                    $role = "hadmin";
+                }
+                if (Bouncer::is($user)->an('admin')) {
+                    $role = "admin";
+                }
+
+                if ($user->confirmed == 0) {
+                    throw new JWTException;
+                }
+                $customClaims = [
+                    'id' => $user->id,
+                    'email' => $user->email,
+                    'role' => $role
+                ];
+                $payload = JWTFactory::make($customClaims);
+                $token = JWTAuth::encode($payload);
+                $user->save();
+                return response()->json(['message' => 'Ok', 'token' => $token->get(), 'role' => $role], 200);
+            } catch (JWTException $e) {
+                // something went wrong
+                dd($e);
+                return response()->json(['error' => 'Could not create token'], 500);
+            }
+
+
         } else {
             return response()->json(['message' => 'invalid activation code'], 200);
         }
