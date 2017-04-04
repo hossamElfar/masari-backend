@@ -71,9 +71,14 @@ class QsController extends Controller
         $news['asked_by'] = $news->user()->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        $answers = $news->answers()->where('verified',true)->get();
+        $user = Auth::user();
+        if ($user->isAn('expert', 'admin', 'ladmin', 'hadmin')) {
+            $answers = $news->answers()->get();
+        } else {
+            $answers = $news->answers()->where('verified', true)->get();
+        }
         foreach ($answers as $answer) {
-            $answer['answered_by']= $answer->user()->get()[0];
+            $answer['answered_by'] = $answer->user()->get()[0];
         }
         $news['answers'] = $answers;
         $data['data']['question'] = $news;
@@ -158,7 +163,7 @@ class QsController extends Controller
     {
         $t = $request->all();
         $t['verified'] = false;
-        $t['question_id']=$id;
+        $t['question_id'] = $id;
         $t['user_id'] = Auth::user()->id;
         $answer = new A($t);
         $answer->save();
