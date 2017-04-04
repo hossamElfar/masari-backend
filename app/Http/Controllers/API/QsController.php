@@ -158,6 +158,7 @@ class QsController extends Controller
     {
         $t = $request->all();
         $t['verified'] = false;
+        $t['question_id']=$id;
         $t['user_id'] = Auth::user()->id;
         $answer = new A($t);
         $answer->save();

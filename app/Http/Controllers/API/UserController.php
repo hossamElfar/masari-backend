@@ -19,7 +19,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment','storeAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment');
+        $this->middleware('expert')->only('getScore', 'getAnswers');
     }
 
     /**
@@ -45,7 +46,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user_assessments = $user->questioners()->get();
-        $assessments = DB::table('questionnaires')->where('language',Input::get('language'))->select('name', 'id','language')->get();
+        $assessments = DB::table('questionnaires')->where('language', Input::get('language'))->select('name', 'id', 'language')->get();
         $flag = false;
         $returned = array();
         foreach ($assessments as $assessment) {
@@ -104,12 +105,12 @@ class UserController extends Controller
             $question = Question::find($answer['question_id']);
             $answer_db = Answer::find($answer['answer_id']);
             $questionnare = Questionnaire::find($answer['questionnare_id']);
-           // dd($questionnare);
-           // $answer_db['user_id']= $user->id;
+            // dd($questionnare);
+            // $answer_db['user_id']= $user->id;
             //$user->answers()->save($answer_db);
-            $questionnare->answers()->save($answer_db,["user_id"=>$user->id]);
+            $questionnare->answers()->save($answer_db, ["user_id" => $user->id]);
             $points = $answer['points'];
-            $grade = new Grade(['user_id'=>$user->id,'answer_id'=>$answer_db->id,'questionnaire_id'=>$questionnare->id,'score'=>$points,'category'=>$answer['category']]);
+            $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => $answer['category']]);
             $grade->save();
             $returned[$answer['category']] = $returned[$answer['category']] + $points;
 
@@ -163,4 +164,45 @@ class UserController extends Controller
         $data['data'] = $fields;
         return response()->json($data, 200);
     }
+
+    /**
+     * Get the score of the user of a specific assessment
+     *
+     * @param $user_code
+     * @return mixed
+     */
+    public function getScore($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $assessmen_id = Input::get('assessment_id');
+        $user = User::find($user_db->id);
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data']['scores'] = $user->getScoresOfAQuestionnare($assessmen_id);
+        return $data;
+    }
+
+//    public function getAnswers($user_code)
+//    {
+//        $user_db = DB::table('users')->where('code', $user_code)->first();
+//        $assessmen_id = Input::get('assessment_id');
+//        // dd($assessmen_id);
+//        $user = User::find($user_db->id);
+//        $user_response = $user->getAnswersOfAQuestionnare($assessmen_id)->get();
+//        $data = array();
+//        foreach ($user_response as $response) {
+//            $questionnare = Questionnaire::find($response['questionnaire_id']);
+//            $data['questionnaire'] = $questionnare;
+//           // $response['questionnaire'] = $questionnare;
+//            foreach ($response['questionnaire']->questions()->get() as $question) {
+//                $question = $assessment->questions()->get();
+//                $assessment['question'] = $question;
+//
+//            }
+//        }
+//        $data['statues'] = "200 Ok";
+//        $data['error'] = null;
+//        $data['data']['assessment'] = $user->getAnswersOfAQuestionnare($assessmen_id)->get();
+//        return $data;
+//    }
 }

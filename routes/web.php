@@ -137,4 +137,13 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get a list of approved timings
      */
     Route::get('experts/approve/{request_id}','API\ScheduleController@approveTiming');
+    /**
+     * Get user scores of an Assessment
+     */
+    Route::get('experts/scores/{user_code}','API\UserController@getScore');
+    /**
+     * Get answers of an Assessment
+     */
+    Route::get('experts/answers/{user_code}','API\UserController@getAnswers');
+
 });
