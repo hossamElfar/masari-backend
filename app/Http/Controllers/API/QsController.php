@@ -25,11 +25,11 @@ class QsController extends Controller
      */
     public function index()
     {
-        $news =DB::table('qs')->orderBy('created_at','desc')->paginate(3)->toArray();
+        $news = DB::table('qs')->orderBy('created_at', 'desc')->paginate(3)->toArray();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($news['data'] as $question) {
-            $question1= Q::find($question->id);
+            $question1 = Q::find($question->id);
             $answers = $question1->answers()->count();
             $question->no_of_answers = $answers;
             $question->asked_by = $question1->user()->get();
@@ -68,10 +68,13 @@ class QsController extends Controller
     public function show($id)
     {
         $news = Q::find($id);
-        $news['asked_by']= $news->user()->get();
+        $news['asked_by'] = $news->user()->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $answers = $news->answers()->get();
+        foreach ($answers as $answer) {
+            $answer['answered_by']= $answer->user()->get();
+        }
         $news['answers'] = $answers;
         $data['data']['question'] = $news;
         if ($news == null) {
