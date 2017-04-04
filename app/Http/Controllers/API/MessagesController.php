@@ -26,11 +26,11 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        $threads = Thread::forUser(Auth::user()->id)->latest('updated_at')->get();
+        $threads = Thread::forUser(Auth::user()->id)->orderBy('created_at','desc')->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($threads as $thread) {
-            $last_message = $thread->messages()->latest('updated_at')->first()->get()[0]->body;
+            $last_message = $thread->messages()->orderBy('created_at','desc')->get()[0]->body;
             $thread['last_message'] = $last_message;
         }
         $data['data']['threads'] = $threads;
