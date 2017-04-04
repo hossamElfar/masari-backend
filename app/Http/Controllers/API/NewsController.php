@@ -26,7 +26,7 @@ class NewsController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = News::paginate(3)->sortByDesc('created_at');
+            $news = DB::table('news')->orderBy('created_at','desc')->paginate(3);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['news'] = $news;

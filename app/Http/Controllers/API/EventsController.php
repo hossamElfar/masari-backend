@@ -31,7 +31,7 @@ class EventsController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Event::paginate(3)->sortByDesc('created_at');
+            $news = DB::table('events')->orderBy('created_at','desc')->paginate(3);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['events'] = $news;

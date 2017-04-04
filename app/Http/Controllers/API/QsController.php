@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Bouncer;
+use Illuminate\Support\Facades\DB;
 
 class QsController extends Controller
 {
@@ -24,10 +25,11 @@ class QsController extends Controller
      */
     public function index()
     {
-        $news = Q::paginate(5)->sortByDesc('created_at');
+        $news =DB::table('qs')->orderBy('created_at','desc')->paginate(3);
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($news as $question) {
+            $question= Q::find($question->id);
             $answers = $question->answers()->count();
             $question['no_of_answers'] = $answers;
             $question['asked_by'] = $question->user()->get()[0];

@@ -27,7 +27,7 @@ class ProgrammesController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2')) {
-            $news = Video::paginate()->sortByDesc('created_at');
+            $news = DB::table('programs')->orderBy('created_at','desc')->paginate(3);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['programs'] = $news;
