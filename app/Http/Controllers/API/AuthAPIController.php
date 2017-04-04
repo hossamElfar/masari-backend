@@ -32,7 +32,7 @@ class AuthAPIController extends Controller
     public function __construct()
     {
         //$this->middleware('guest', ['except' => 'logout']);
-        $this->middleware('auth')->only('update');
+        $this->middleware('auth')->only('update', 'upload');
     }
 
     /**
@@ -225,7 +225,7 @@ class AuthAPIController extends Controller
 
     /**
      * update profile
-     * 
+     *
      * @param Request $request
      * @return mixed
      */
@@ -260,6 +260,7 @@ class AuthAPIController extends Controller
         $data['data'] = $user;
         return response()->json($data, 200);
     }
+
     /**
      * @param uri : the uri to the image to be deleted
      */
@@ -273,5 +274,25 @@ class AuthAPIController extends Controller
         $tmp = array_slice($tmp, 0, -1);
         $public_id = implode(".", $tmp);
         Uploader::destroy($public_id);
+    }
+
+    public function upload(Request $request)
+    {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $file = $request->file('pp');
+        \Cloudinary::config(array(
+            "cloud_name" => env("CLOUDINARY_NAME"),
+            "api_key" => env("CLOUDINARY_KEY"),
+            "api_secret" => env("CLOUDINARY_SECRET")
+        ));
+        if ($user->pp) {
+            // delete previous profile picture
+            $this->delete_image($user->pp);
+        }
+        // upload and set new picture
+        $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
+        $user->pp = $image["url"];
+        $user->save();
+        return $user;
     }
 }

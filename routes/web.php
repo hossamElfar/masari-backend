@@ -28,6 +28,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::post('login', 'API\AuthAPIController@login');
     Route::post('logout', 'API\AuthAPIController@logout');
     Route::post('update', 'API\AuthAPIController@update');
+    Route::any('upload','API\AuthAPIController@upload');
     /**
      * View profile API
      */
@@ -134,7 +135,7 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('experts/get/approved','API\ScheduleController@approvedTiming');
     /**
-     * Get a list of approved timings
+     * Approve a request
      */
     Route::get('experts/approve/{request_id}','API\ScheduleController@approveTiming');
     /**
