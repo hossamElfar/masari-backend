@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user_assessments = $user->questioners()->get();
-        $assessments = DB::table('questionnaires')->select('name', 'id')->get();
+        $assessments = DB::table('questionnaires')->where('language',Input::get('language'))->select('name', 'id','language')->get();
         $flag = false;
         $returned = array();
         foreach ($assessments as $assessment) {

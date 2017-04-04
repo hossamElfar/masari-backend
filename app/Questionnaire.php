@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Questionnaire extends Model
 {
-    protected $fillable = ['name', 'no_of_questions'];
+    protected $fillable = ['name', 'no_of_questions','language'];
 
     public function answers()
     {

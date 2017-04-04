@@ -32,9 +32,11 @@ $factory->define(App\News::class, function (Faker\Generator $faker) {
     ];
 });
 $factory->define(App\Questionnaire::class, function (Faker\Generator $faker) {
+    $random = ['ar','en'];
     return [
         'name' => $faker->name,
-        'no_of_questions' => 20
+        'no_of_questions' => 20,
+        'language'=>$random[array_rand($random, 1)]
     ];
 });
 $factory->define(App\Question::class, function (Faker\Generator $faker) {
