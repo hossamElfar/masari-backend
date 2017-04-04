@@ -19,6 +19,7 @@ use Validator;
 use Mail;
 use Auth;
 use Bouncer;
+use Cloudinary\Uploader;
 
 
 class AuthAPIController extends Controller
@@ -223,7 +224,10 @@ class AuthAPIController extends Controller
     }
 
     /**
-     * Update profile
+     * update profile
+     * 
+     * @param Request $request
+     * @return mixed
      */
     public function update(Request $request)
     {
@@ -234,11 +238,40 @@ class AuthAPIController extends Controller
         $validator = $this->validatorUpdate($t);
         if ($validator->fails())
             return response()->json($validator->errors(), 400);
+        if ($request->file('pp')) {
+            \Cloudinary::config(array(
+                "cloud_name" => env("CLOUDINARY_NAME"),
+                "api_key" => env("CLOUDINARY_KEY"),
+                "api_secret" => env("CLOUDINARY_SECRET")
+            ));
+            if ($user->pp) {
+                // delete previous profile picture
+                $this->delete_image($user->pp);
+            }
+            // upload and set new picture
+            $file = $request->file('pp');
+            $image = Uploader::upload($file->getRealPath(), ["width" => 300, "height" => 300, "crop" => "limit"]);
+            $user->pp = $image["url"];
+        }
         $user->update($t);
         $user->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data'] = $user;
         return response()->json($data, 200);
+    }
+    /**
+     * @param uri : the uri to the image to be deleted
+     */
+    private function delete_image($uri)
+    {
+        // extract the public id
+        $tmp = explode('/', $uri);
+        $public_id = end($tmp);
+        // remove the extension
+        $tmp = explode('.', $public_id);
+        $tmp = array_slice($tmp, 0, -1);
+        $public_id = implode(".", $tmp);
+        Uploader::destroy($public_id);
     }
 }
