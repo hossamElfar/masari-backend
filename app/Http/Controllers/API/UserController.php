@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Answer;
 use App\Field;
+use App\Grade;
+use App\Question;
 use App\Questionnaire;
 use App\User;
 use Illuminate\Http\Request;
@@ -11,11 +14,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Bouncer;
+
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment');;
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment','storeAssessment');
     }
 
     /**
@@ -88,9 +92,31 @@ class UserController extends Controller
      */
     public function storeAssessment(Request $request)
     {
+        $user = Auth::user();
         $data = $request->all();
-        return $data;
+        $returned = [];
+        foreach ($data as $category) {
+            $returned[$category['category']] = 0;
+        }
+        //  dd($data);
+        foreach ($data as $answer) {
+
+            $question = Question::find($answer['question_id']);
+            $answer_db = Answer::find($answer['answer_id']);
+            $questionnare = Questionnaire::find($answer['questionnare_id']);
+           // dd($questionnare);
+           // $answer_db['user_id']= $user->id;
+            //$user->answers()->save($answer_db);
+            $questionnare->answers()->save($answer_db,["user_id"=>$user->id]);
+            $points = $answer['points'];
+            $grade = new Grade(['user_id'=>$user->id,'answer_id'=>$answer_db->id,'questionnaire_id'=>$questionnare->id,'score'=>$points,'category'=>$answer['category']]);
+            $grade->save();
+            $returned[$answer['category']] = $returned[$answer['category']] + $points;
+
+        }
+        return $returned;
     }
+
     /**
      * Get experts .
      *

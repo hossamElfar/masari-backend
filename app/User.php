@@ -95,10 +95,39 @@ class User extends Authenticatable
 
     public function request_client()
     {
-        return $this->hasMany('App\Request','client_id');
+        return $this->hasMany('App\Request', 'client_id');
     }
+
     public function request_expert()
     {
-        return $this->hasMany('App\Request','expert_id');
+        return $this->hasMany('App\Request', 'expert_id');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany('App\Answer');
+    }
+
+    public function getAnswersOfAQuestionnare($questionnare_id)
+    {
+        return $this->grades()->where('questionnaire_id', $questionnare_id);
+    }
+
+    public function getAnswersOfAQuestionnareOfACategory($questionnare_id, $category)
+    {
+        return $this->grades()->where(['questionnaire_id' => $questionnare_id, 'category' => $category]);
+    }
+
+    public function getScoresOfAQuestionnare($questionnare_id)
+    {
+        $grades = $this->grades()->where('questionnaire_id', $questionnare_id)->get();
+        $returned = [];
+        foreach ($grades as $grade) {
+            $returned[$grade->category] = 0;
+        }
+        foreach ($grades as $grade) {
+            $returned[$grade->category] = $returned[$grade->category]+$grade->score;
+        }
+        return $returned;
     }
 }
