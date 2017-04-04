@@ -71,7 +71,7 @@ class QsController extends Controller
         $news['asked_by'] = $news->user()->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        $answers = $news->answers()->get();
+        $answers = $news->answers()->where('verified',true)->get();
         foreach ($answers as $answer) {
             $answer['answered_by']= $answer->user()->get()[0];
         }
