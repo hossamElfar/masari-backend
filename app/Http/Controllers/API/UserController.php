@@ -102,7 +102,7 @@ class UserController extends Controller
        // dd($returned);
         foreach ($data as $answer) {
 
-            $question = Question::findOrFail($answer['question_id']);
+           // $question = Question::findOrFail($answer['question_id']);
             $answer_db = Answer::findOrFail($answer['answer_id']);
             $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
             // dd($questionnare);
