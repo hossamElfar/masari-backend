@@ -111,6 +111,7 @@ class UserController extends Controller
                 // $answer_db['user_id']= $user->id;
                 //$user->answers()->save($answer_db);
                 $questionnare->answers()->save($answer_db, ["user_id" => $user->id]);
+                $questionnare->user()->attach($user);
                 $points = $answer['points'];
                 $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => $answer['category']]);
                 $grade->save();
