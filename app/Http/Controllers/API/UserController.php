@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment','storeValuesAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
     }
 
@@ -46,7 +46,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $user_assessments = $user->questioners()->get();
-        $assessments = DB::table('questionnaires')->where('language', Input::get('language'))->select('name', 'id', 'language', 'description','type')->get();
+        $assessments = DB::table('questionnaires')->where('language', Input::get('language'))->select('name', 'id', 'language', 'description', 'type')->get();
         $flag = false;
         $returned = array();
         foreach ($assessments as $assessment) {
@@ -131,6 +131,33 @@ class UserController extends Controller
                 $returned[$answer['category']] = $returned[$answer['category']] + $points;
             }
             $i++;
+        }
+        $questionnare_out->user()->save($user);
+        return $returned;
+    }
+
+    public function storeValuesAssessment(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        $returned = [];
+        $questionnare_out = new Questionnaire();
+        // dd($returned);
+
+        foreach ($data as $answer) {
+            $question = Question::findOrFail($answer['question_id']);
+            $answer_db = new Answer(['question_id' => $question->id, 'user_id' => $user->id, 'points' => $answer['points'], 'answer_content' => 'values assessment']);
+            $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
+            // dd($questionnare);
+            // $answer_db['user_id']= $user->id;
+            //$user->answers()->save($answer_db);
+            $questionnare->answers()->save($answer_db, ["user_id" => $user->id]);
+            $questionnare_out = $questionnare;
+            $points = $answer['points'];
+            $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => ""]);
+            $grade->save();
+            array_push($returned,$grade);
+            //$returned[$answer['category']] = $returned[$answer['category']] + $points;
         }
         $questionnare_out->user()->save($user);
         return $returned;
