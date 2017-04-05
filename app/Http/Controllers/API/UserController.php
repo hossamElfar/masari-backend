@@ -102,9 +102,9 @@ class UserController extends Controller
        // dd($returned);
         foreach ($data as $answer) {
 
-            $question = Question::find($answer['question_id']);
-            $answer_db = Answer::find($answer['answer_id']);
-            $questionnare = Questionnaire::find($answer['questionnaire_id']);
+            $question = Question::findOrFail($answer['question_id']);
+            $answer_db = Answer::findOrFail($answer['answer_id']);
+            $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
             // dd($questionnare);
             // $answer_db['user_id']= $user->id;
             //$user->answers()->save($answer_db);
