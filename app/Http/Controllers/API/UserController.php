@@ -104,7 +104,7 @@ class UserController extends Controller
 
             $question = Question::find($answer['question_id']);
             $answer_db = Answer::find($answer['answer_id']);
-            $questionnare = Questionnaire::find($answer['questionnare_id']);
+            $questionnare = Questionnaire::find($answer['questionnaire_id']);
             // dd($questionnare);
             // $answer_db['user_id']= $user->id;
             //$user->answers()->save($answer_db);
