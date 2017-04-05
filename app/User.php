@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function questioners()
     {
-        return $this->belongsTo('App\Questionnaire', 'questionnaires_users');
+        return $this->belongsToMany('App\Questionnaire', 'questionnaires_users');
     }
 
     public function videos()
@@ -126,8 +126,20 @@ class User extends Authenticatable
             $returned[$grade->category] = 0;
         }
         foreach ($grades as $grade) {
-            $returned[$grade->category] = $returned[$grade->category]+$grade->score;
+            $returned[$grade->category] = $returned[$grade->category] + $grade->score;
         }
         return $returned;
+    }
+
+    public function isAssessmentTake(Questionnaire $q)
+    {
+        $submitted = $this->questioners()->get();
+        $flag = false;
+        foreach ($submitted as $ass) {
+            if ($q->id == $ass->id) {
+                $flag = true;
+            }
+        }
+        return $flag;
     }
 }

@@ -52,7 +52,7 @@ class UserController extends Controller
         foreach ($assessments as $assessment) {
             $flag = false;
             foreach ($user_assessments as $user_assessment) {
-                if ($assessment->id == $user_assessment) {
+                if ($assessment->id == $user_assessment->id) {
                     $flag = true;
                     break;
                 }
