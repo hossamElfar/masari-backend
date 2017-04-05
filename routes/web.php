@@ -146,5 +146,9 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get answers of an Assessment
      */
     Route::get('experts/answers/{user_code}','API\UserController@getAnswers');
+    /**
+     * Get a list of assessments that a client hs taken
+     */
+    Route::get('experts/users/{user_code}','API\UserController@getUserAssessment');
 
 });

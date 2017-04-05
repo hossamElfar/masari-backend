@@ -20,7 +20,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment');
-        $this->middleware('expert')->only('getScore', 'getAnswers');
+        $this->middleware('expert')->only('getScore', 'getAnswers','getUserAssessment');
     }
 
     /**
@@ -97,7 +97,7 @@ class UserController extends Controller
         $data = $request->all();
         $returned = [];
         foreach ($data as $category) {
-            if($category != "")
+            if ($category != "")
                 $returned[$category['category']] = 0;
         }
         // dd($returned);
@@ -209,4 +209,15 @@ class UserController extends Controller
 //        $data['data']['assessment'] = $user->getAnswersOfAQuestionnare($assessmen_id)->get();
 //        return $data;
 //    }
+
+    public function getUserAssessment($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $user = User::find($user_db->id);
+        $user_assessments = $user->questioners()->get();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data']['assessments'] = $user_assessments;
+        return $data;
+    }
 }
