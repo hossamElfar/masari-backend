@@ -99,7 +99,7 @@ class UserController extends Controller
         foreach ($data as $category) {
             $returned[$category['category']] = 0;
         }
-        //  dd($data);
+       // dd($returned);
         foreach ($data as $answer) {
 
             $question = Question::find($answer['question_id']);
