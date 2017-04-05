@@ -75,7 +75,7 @@ class UserController extends Controller
     public function getAssessment($id)
     {
         $assessment = Questionnaire::findOrFail($id);
-        $questions = $assessment->questions()->paginate(5);
+        $questions = $assessment->questions()->get();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($questions as $question) {
