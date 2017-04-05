@@ -27,13 +27,13 @@ class ProgrammesController extends Controller
     public function index()
     {
         if (Bouncer::is(Auth::user())->an('admin', 'admin_level_1', 'admin_level_2','expert')) {
-            $news = DB::table('programs')->orderBy('created_at','desc')->paginate(3);
+            $news = DB::table('programs')->orderBy('created_at','desc')->paginate(7);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['programs'] = $news;
             return response()->json($data, 200);
         } else {
-            $news = DB::table('programs')->where('verified', true)->orderBy('created_at','desc')->paginate(3);
+            $news = DB::table('programs')->where('verified', true)->orderBy('created_at','desc')->paginate(7);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data']['programmes'] = $news;

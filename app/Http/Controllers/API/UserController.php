@@ -96,6 +96,7 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         $returned = [];
+        $questionnare_out = new Questionnaire();
         foreach ($data as $category) {
             if ($category != "")
                 $returned[$category['category']] = 0;
@@ -111,7 +112,7 @@ class UserController extends Controller
                 // $answer_db['user_id']= $user->id;
                 //$user->answers()->save($answer_db);
                 $questionnare->answers()->save($answer_db, ["user_id" => $user->id]);
-                $questionnare->user()->attach($user);
+                $questionnare_out =$questionnare;
                 $points = $answer['points'];
                 $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => $answer['category']]);
                 $grade->save();
@@ -119,6 +120,7 @@ class UserController extends Controller
             }
             $i++;
         }
+        $questionnare_out->user()->save($user);
         return $returned;
     }
 
