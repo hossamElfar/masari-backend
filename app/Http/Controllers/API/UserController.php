@@ -97,7 +97,8 @@ class UserController extends Controller
         $data = $request->all();
         $returned = [];
         foreach ($data as $category) {
-            $returned[$category['category']] = 0;
+            if($category != "")
+                $returned[$category['category']] = 0;
         }
         // dd($returned);
         $i = 0;
@@ -114,9 +115,8 @@ class UserController extends Controller
                 $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => $answer['category']]);
                 $grade->save();
                 $returned[$answer['category']] = $returned[$answer['category']] + $points;
-                $i++;
             }
-
+            $i++;
         }
         return $returned;
     }
