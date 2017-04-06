@@ -142,4 +142,22 @@ class User extends Authenticatable
         }
         return $flag;
     }
+
+    public function getScoresOfValuesQuestionnare($id)
+    {
+        $assessment = Questionnaire::find($id);
+        $returned = [];
+        $answers = $assessment->answers()->get();
+        for ($n = 7; $n >= 1; $n--) {
+            foreach ($answers as $answer) {
+                if ($answer->points == $n) {
+                    array_push($returned, $answer);
+                }
+            }
+            if (sizeof($returned) >= 10) {
+                break;
+            }
+        }
+        return $returned;
+    }
 }

@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment','storeValuesAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
     }
 
@@ -153,12 +153,12 @@ class UserController extends Controller
             // dd($questionnare);
             // $answer_db['user_id']= $user->id;
             //$user->answers()->save($answer_db);
-            $questionnare->answers()->attach($answer_db, ["user_id" => $user->id,'answer_id'=>$answer_db->id]);
+            $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
             $questionnare_out = $questionnare;
             $points = $answer['points'];
             $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => ""]);
             $grade->save();
-            array_push($returned,$grade);
+            array_push($returned, $grade);
             //$returned[$answer['category']] = $returned[$answer['category']] + $points;
         }
         $questionnare_out->user()->save($user);
@@ -222,11 +222,29 @@ class UserController extends Controller
     {
         $user_db = DB::table('users')->where('code', $user_code)->first();
         $assessmen_id = Input::get('assessment_id');
-        $user = User::find($user_db->id);
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data']['scores'] = $user->getScoresOfAQuestionnare($assessmen_id);
-        return $data;
+        $questionnaire = Questionnaire::find($assessmen_id);
+        switch ($questionnaire->type) {
+            case "mcq":
+                $user = User::find($user_db->id);
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = $user->getScoresOfAQuestionnare($assessmen_id);
+                return $data;
+                break;
+            case "values":
+                $user = User::find($user_db->id);
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = $user->getScoresOfValuesQuestionnare($assessmen_id);
+                return $data;
+                break;
+            default:
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = null;
+                break;
+        }
+
     }
 
 //    public function getAnswers($user_code)
