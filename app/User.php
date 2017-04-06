@@ -149,14 +149,15 @@ class User extends Authenticatable
         $returned = [];
         $answers = $assessment->answers()->get();
         for ($n = 7; $n >= 1; $n--) {
+            if (sizeof($returned) >= 10) {
+                break;
+            }
             foreach ($answers as $answer) {
                 if ($answer->points == $n) {
                     array_push($returned, $answer);
                 }
             }
-            if (sizeof($returned) >= 10) {
-                break;
-            }
+
         }
         return $returned;
     }
