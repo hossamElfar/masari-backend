@@ -21,6 +21,7 @@ class UserController extends Controller
     {
         $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
+        $this->middleware('admin')->only('removeUserAssessment');
     }
 
     /**
@@ -151,7 +152,7 @@ class UserController extends Controller
                 $data1['statues'] = "302 Ok";
                 $data1['error'] = "This assessment hs been taken before";
                 $data1['data'] = null;
-                return response()->json($data1,302);
+                return response()->json($data1, 302);
             }
         }
 
@@ -293,5 +294,24 @@ class UserController extends Controller
         $data['error'] = null;
         $data['data']['assessments'] = $user_assessments;
         return $data;
+    }
+
+    /**
+     * Remove the assessment submission from a user
+     *
+     * @param $user_code
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function removeUserAssessment($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $user = User::find($user_db->id);
+        $assessment = Questionnaire::find(Input::get('assessment_id'));
+        $user->questioners()->detach($assessment);
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
+        return response()->json($data, 200);
     }
 }

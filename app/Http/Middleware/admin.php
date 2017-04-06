@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\User;
 use Closure;
 use Bouncer;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;

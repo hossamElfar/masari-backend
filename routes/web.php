@@ -154,5 +154,9 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get a list of assessments that a client hs taken
      */
     Route::get('experts/users/{user_code}','API\UserController@getUserAssessment');
+    /**
+     * Remove a assessment the user has taken
+     */
+    Route::get('admin/users/remove/{user_code}','API\UserController@removeUserAssessment');
 
 });
