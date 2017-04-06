@@ -164,7 +164,8 @@ class User extends Authenticatable
     public function getScoresOfValuesQuestionnareSorted($id)
     {
         $assessment = Questionnaire::find($id);
-        $values = $this->values()->sortBy('rank')->get();
+       // dd($assessment->values()->get());
+        $values = $assessment->values()->where('user_id',$this->id)->get()->sortBy('rank');
         return $values;
     }
 

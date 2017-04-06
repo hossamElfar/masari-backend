@@ -329,7 +329,8 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         foreach ($data as $key=>$value) {
-            $value_db = new Value(['user_id' => $user->id, 'question_id' => $data['question_id'], 'questionnaire_id' => $data['questionnaire_id'], 'answer_id' => $data['answer_id'],'rank'=>($key+1)]);
+            //dd($data);
+            $value_db = new Value(['answer_content'=>$value['answer_content'],'points'=>$value['points'],'user_id' => $user->id, 'question_id' => $value['question_id'], 'questionnaire_id' => $value['pivot']['questionnaire_id'], 'answer_id' => $value['pivot']['answer_id'],'rank'=>($key+1)]);
             $value_db->save();
         }
         $data1['statues'] = "200 Ok";
