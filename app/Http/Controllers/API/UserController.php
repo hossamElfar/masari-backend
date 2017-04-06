@@ -149,10 +149,11 @@ class UserController extends Controller
             $answer_db = new Answer(['question_id' => $question->id, 'user_id' => $user->id, 'points' => $answer['points'], 'answer_content' => 'values assessment']);
             $answer_db->save();
             $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
+            $question->answers()->save($answer_db);
             // dd($questionnare);
             // $answer_db['user_id']= $user->id;
             //$user->answers()->save($answer_db);
-            $questionnare->answers()->save($answer_db, ["user_id" => $user->id]);
+            $questionnare->answers()->attach($answer_db, ["user_id" => $user->id,'answer_id'=>$answer_db->id]);
             $questionnare_out = $questionnare;
             $points = $answer['points'];
             $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $points, 'category' => ""]);
