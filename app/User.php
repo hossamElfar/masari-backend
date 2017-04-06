@@ -161,6 +161,14 @@ class User extends Authenticatable
         return $returned;
     }
 
+    public function getScoresOfValuesQuestionnareSorted($id)
+    {
+        $assessment = Questionnaire::find($id);
+        $values = $this->values()->sortBy('rank')->get();
+        return $values;
+    }
+
+
     public function values()
     {
         return $this->hasMany('App\Value');

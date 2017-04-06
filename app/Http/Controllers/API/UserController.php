@@ -8,6 +8,7 @@ use App\Grade;
 use App\Question;
 use App\Questionnaire;
 use App\User;
+use App\Value;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -251,7 +252,7 @@ class UserController extends Controller
                 $user = User::find($user_db->id);
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
-                $data['data']['scores'] = $user->getScoresOfValuesQuestionnare($assessmen_id);
+                $data['data']['scores'] = $user->getScoresOfValuesQuestionnareSorted($assessmen_id);
                 return $data;
                 break;
             default:
@@ -317,8 +318,30 @@ class UserController extends Controller
         return response()->json($data, 200);
     }
 
+    /**
+     * Store users sorted values
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function storeValuesAssessmentSorted(Request $request)
     {
+        $user = Auth::user();
         $data = $request->all();
+        foreach ($data as $key=>$value) {
+            $value_db = new Value(['user_id' => $user->id, 'question_id' => $data['question_id'], 'questionnaire_id' => $data['questionnaire_id'], 'answer_id' => $data['answer_id'],'rank'=>($key+1)]);
+            $value_db->save();
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
+    }
+
+    public function getSortedValues($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $user = User::find($user_db->id);
+        
     }
 }
