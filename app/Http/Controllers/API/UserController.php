@@ -133,6 +133,7 @@ class UserController extends Controller
             $i++;
         }
         $questionnare_out->user()->save($user);
+
         return $returned;
     }
 
@@ -143,12 +144,23 @@ class UserController extends Controller
         $returned = [];
         $questionnare_out = new Questionnaire();
         // dd($returned);
+        $user_assessments = $user->questioners()->get();
+        $questionnare = Questionnaire::findOrFail($data[0]['questionnaire_id']);
+        foreach ($user_assessments as $assessment) {
+            if ($assessment->id == $questionnare->id) {
+                $data1['statues'] = "302 Ok";
+                $data1['error'] = "This assessment hs been taken before";
+                $data1['data'] = null;
+                return response()->json($data1,302);
+            }
+        }
 
         foreach ($data as $answer) {
+
             $question = Question::findOrFail($answer['question_id']);
             $answer_db = new Answer(['question_id' => $question->id, 'points' => $answer['points'], 'answer_content' => 'values assessment']);
             $answer_db->save();
-            $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
+
             $question->answers()->save($answer_db);
             // dd($questionnare);
             // $answer_db['user_id']= $user->id;
@@ -162,7 +174,8 @@ class UserController extends Controller
             //$returned[$answer['category']] = $returned[$answer['category']] + $points;
         }
         $questionnare_out->user()->save($user);
-        return $returned;
+
+        return $user->getScoresOfValuesQuestionnare($questionnare_out);
     }
 
     /**
