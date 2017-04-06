@@ -142,10 +142,12 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
+        //dd($request->all());
         $returned = [];
         $questionnare_out = new Questionnaire();
         // dd($returned);
         $user_assessments = $user->questioners()->get();
+        //dd($data);
         $questionnare = Questionnaire::findOrFail($data[0]['questionnaire_id']);
         foreach ($user_assessments as $assessment) {
             if ($assessment->id == $questionnare->id) {
@@ -176,7 +178,7 @@ class UserController extends Controller
         }
         $questionnare_out->user()->save($user);
 
-        return $user->getScoresOfValuesQuestionnare($questionnare_out);
+        return $user->getScoresOfValuesQuestionnare($questionnare_out->id);
     }
 
     /**
