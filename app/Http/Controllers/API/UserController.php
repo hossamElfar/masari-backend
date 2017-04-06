@@ -146,7 +146,7 @@ class UserController extends Controller
 
         foreach ($data as $answer) {
             $question = Question::findOrFail($answer['question_id']);
-            $answer_db = new Answer(['question_id' => $question->id, 'user_id' => $user->id, 'points' => $answer['points'], 'answer_content' => 'values assessment']);
+            $answer_db = new Answer(['question_id' => $question->id, 'points' => $answer['points'], 'answer_content' => 'values assessment']);
             $answer_db->save();
             $questionnare = Questionnaire::findOrFail($answer['questionnaire_id']);
             $question->answers()->save($answer_db);
