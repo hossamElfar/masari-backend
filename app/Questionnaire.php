@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Questionnaire extends Model
 {
-    protected $fillable = ['name', 'no_of_questions','language'];
+    protected $fillable = ['name', 'no_of_questions', 'language'];
 
     public function answers()
     {
@@ -20,6 +20,11 @@ class Questionnaire extends Model
 
     public function questions()
     {
-       return $this->hasMany('App\Question');
+        return $this->hasMany('App\Question');
+    }
+
+    public function values()
+    {
+        return $this->hasMany('App\Value');
     }
 }

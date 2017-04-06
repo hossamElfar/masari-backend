@@ -19,7 +19,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
         $this->middleware('admin')->only('removeUserAssessment');
     }
@@ -315,5 +315,10 @@ class UserController extends Controller
         $data['error'] = null;
         $data['data'] = null;
         return response()->json($data, 200);
+    }
+
+    public function storeValuesAssessmentSorted(Request $request)
+    {
+        $data = $request->all();
     }
 }

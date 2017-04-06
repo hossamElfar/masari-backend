@@ -160,4 +160,9 @@ class User extends Authenticatable
         }
         return $returned;
     }
+
+    public function values()
+    {
+        return $this->hasMany('App\Value');
+    }
 }

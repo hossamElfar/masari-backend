@@ -17,4 +17,10 @@ class Question extends Model
     {
         return $this->hasMany('App\Answer');
     }
+
+    public function values()
+    {
+        return $this->hasMany('App\Value');
+    }
+    
 }
