@@ -148,19 +148,19 @@ class User extends Authenticatable
         $assessment = Questionnaire::find($id);
         $returned = [];
         $answers = $this->grades()->where('questionnaire_id', $id)->get();
-        return $answers;
-//        for ($n = 7; $n >= 1; $n--) {
-//
-//            foreach ($answers as $answer) {
-//                if ($answer->points == $n) {
-//                    array_push($returned, $answer);
-//                }
-//            }
-//            if (sizeof($returned) >= 10) {
-//                return $returned;
-//            }
-//
-//        }
+       // return $answers;
+        for ($n = 7; $n >= 1; $n--) {
+
+            foreach ($answers as $answer) {
+                if ($answer->points == $n) {
+                    array_push($returned, $answer);
+                }
+            }
+            if (sizeof($returned) >= 10) {
+                return $returned;
+            }
+
+        }
 
     }
 
