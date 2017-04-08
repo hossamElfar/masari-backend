@@ -403,16 +403,19 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         foreach ($data as $grade) {
-            $question_id = $grade['question_id'];
-            $questionnaire_id = $grade['questionnaire_id'];
-            $questionnare = Questionnaire::find($questionnaire_id);
-            $question = Question::findOrFail($question_id);
-            $answer_db = new Answer(['question_id' => $question_id, 'points' => -1, 'answer_content' => $grade['answer']]);
-            $answer_db->save();
-            $question->answers()->save($answer_db);
-            $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-            $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "text"]);
-            $grade->save();
+            if ($grade['enable'] == true) {
+                $question_id = $grade['question_id'];
+                $questionnaire_id = $grade['questionnaire_id'];
+                $questionnare = Questionnaire::find($questionnaire_id);
+                $question = Question::findOrFail($question_id);
+                $answer_db = new Answer(['question_id' => $question_id, 'points' => -1, 'answer_content' => $grade['answer']]);
+                $answer_db->save();
+                $question->answers()->save($answer_db);
+                $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "text"]);
+                $grade->save();
+            }
+
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
