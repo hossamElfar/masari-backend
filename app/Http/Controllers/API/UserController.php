@@ -111,6 +111,17 @@ class UserController extends Controller
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
+            case "kteer":
+                $questions = $assessment->questions()->get();
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                foreach ($questions as $question) {
+                    $answers = $question->answers()->get();
+                    $question['answers'] = $answers;
+                }
+                $data['data']['questions'] = $questions;
+                return $data;
+                break;
             default:
                 return null;
         }
@@ -398,6 +409,12 @@ class UserController extends Controller
         return response()->json($data1, 200);
     }
 
+    /**
+     * Store text assessment
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function storeTextAssessment(Request $request)
     {
         $user = Auth::user();
@@ -416,6 +433,41 @@ class UserController extends Controller
                 $grade->save();
             }
 
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
+    }
+
+    /**
+     * Store kteer assessment
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function storeKteerAssessment(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        foreach ($data as $grade) {
+            $question_id = $grade['question_id'];
+            $questionnaire_id = $grade['questionnaire_id'];
+            $questionnare = Questionnaire::find($questionnaire_id);
+            $answers = $grade['Answers'];
+            foreach ($answers as $index => $answer) {
+                if ($answer != -1) {
+                    $question = Question::findOrFail($question_id);
+                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index, 'answer_content' => 'multi assessment']);
+                    $answer_db->save();
+
+                    $question->answers()->save($answer_db);
+                    $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
+                    $grade->save();
+                }
+            }
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
