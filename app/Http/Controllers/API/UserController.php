@@ -332,7 +332,7 @@ class UserController extends Controller
         $data = $request->all();
         foreach ($data as $key=>$value) {
             //dd($data);
-            $value_db = new Value(['answer_content'=>$value['answer_content'],'points'=>$value['points'],'user_id' => $user->id, 'question_id' => $value['question_id'], 'questionnaire_id' => $value['questionnaire_id'], 'answer_id' => $value['answer_id'],'rank'=>($key+1)]);
+            $value_db = new Value(['answer_content'=>$value['answer_content'],'points'=>$value['points'],'user_id' => $user->id, 'question_id' => $value['question_id'], 'questionnaire_id' => $value['questionnaire_id'], 'answer_id' => $value['id'],'rank'=>($key+1)]);
             $value_db->save();
         }
         $data1['statues'] = "200 Ok";

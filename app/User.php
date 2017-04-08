@@ -149,13 +149,17 @@ class User extends Authenticatable
         $returned = [];
         $grades = $this->grades()->where('questionnaire_id', $id)->get();
         //return $grades[0]->answer()->get();
-       // return $answers;
+        // return $answers;
         for ($n = 7; $n >= 1; $n--) {
 
             foreach ($grades as $grade) {
-             //   dd($grade->answer()->get()[0]->points);
+                //   dd($grade->answer()->get()[0]->points);
                 if ($grade->answer()->get()[0]->points == $n) {
-                    array_push($returned, $grade->answer()->get()[0]);
+                    $grade->answer()->get()[0]['questionnaire_id'] = $id;
+                    $temp = $grade->answer()->get()[0];
+                    $temp['questionnaire_id'] = $id;
+
+                    array_push($returned, $temp);
                 }
             }
             if (sizeof($returned) >= 10) {
