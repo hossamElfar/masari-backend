@@ -115,10 +115,10 @@ class UserController extends Controller
                 $questions = $assessment->questions()->get()[0];
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
-                foreach ($questions as $question) {
-                    $answers = $question->answers()->get();
-                    $question['answers'] = $answers;
-                }
+
+                $answers = $questions->answers()->get();
+                $question['answers'] = $answers;
+
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
