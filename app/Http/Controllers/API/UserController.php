@@ -20,7 +20,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted','storeMultiAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
         $this->middleware('admin')->only('removeUserAssessment');
     }
@@ -365,6 +365,28 @@ class UserController extends Controller
 
     public function storeMultiAssessment(Request $request)
     {
-        return $request->all();
+        $user = Auth::user();
+        $data = $request->all();
+        foreach ($data as $grade) {
+            $question_id = $grade['question_id'];
+            $questionnaire_id = $grade['questionnaire_id'];
+            $answers = $grade['Answers'];
+            foreach ($answers as $index => $answer) {
+                if ($answer != -1) {
+                    $question = Question::findOrFail('question_id');
+                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index, 'answer_content' => 'multi assessment']);
+                    $answer_db->save();
+                    $questionnare = Questionnaire::find($questionnaire_id);
+                    $question->answers()->save($answer_db);
+                    $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
+                    $grade->save();
+                }
+            }
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
     }
 }
