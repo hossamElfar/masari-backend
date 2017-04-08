@@ -117,7 +117,7 @@ class UserController extends Controller
                 $data['error'] = null;
 
                 $answers = $questions->answers()->get();
-                $question['answers'] = $answers;
+                $questions['answers'] = $answers;
 
                 $data['data']['questions'] = $questions;
                 return $data;
