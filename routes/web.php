@@ -50,6 +50,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::post('assessment/values', 'API\UserController@storeValuesAssessment');
     /**
+     * Post values assessment score
+     */
+    Route::post('assessment/multi', 'API\UserController@storeMultiAssessment');
+    /**
      * Post values assessment sorted score
      */
     Route::post('assessment/values/sort', 'API\UserController@storeValuesAssessmentSorted');

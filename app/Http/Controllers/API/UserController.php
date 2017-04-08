@@ -77,7 +77,7 @@ class UserController extends Controller
     public function getAssessment($id)
     {
         $assessment = Questionnaire::findOrFail($id);
-       // dd($assessment->type);
+        // dd($assessment->type);
         switch ($assessment->type) {
             case "mcq":
                 $questions = $assessment->questions()->get();
@@ -97,7 +97,15 @@ class UserController extends Controller
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
-            default: return null;
+            case "multi":
+                $questions = $assessment->questions()->get();
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['questions'] = $questions;
+                return $data;
+                break;
+            default:
+                return null;
         }
 
     }
@@ -330,9 +338,9 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             //dd($data);
-            $value_db = new Value(['answer_content'=>$value['answer_content'],'points'=>$value['points'],'user_id' => $user->id, 'question_id' => $value['question_id'], 'questionnaire_id' => $value['questionnaire_id'], 'answer_id' => $value['id'],'rank'=>($key+1)]);
+            $value_db = new Value(['answer_content' => $value['answer_content'], 'points' => $value['points'], 'user_id' => $user->id, 'question_id' => $value['question_id'], 'questionnaire_id' => $value['questionnaire_id'], 'answer_id' => $value['id'], 'rank' => ($key + 1)]);
             $value_db->save();
         }
         $data1['statues'] = "200 Ok";
@@ -345,6 +353,18 @@ class UserController extends Controller
     {
         $user_db = DB::table('users')->where('code', $user_code)->first();
         $user = User::find($user_db->id);
-        
+
+    }
+
+    /**
+     * Store multi valued assessment
+     *
+     * @param Request $request
+     * @return array
+     */
+
+    public function storeMultiAssessment(Request $request)
+    {
+        return $request->all();
     }
 }

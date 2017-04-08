@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnToAssessmentTable extends Migration
+class AddTitleColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,8 @@ class AddColumnToAssessmentTable extends Migration
      */
     public function up()
     {
-        Schema::table('questionnaires', function (Blueprint $table) {
-            /**
-             * "values" => 7s
-             * "multi" => choose more than one
-             * "feelings" => writing user's opinion
-             * "mcq" => choose one
-             */
-            $table->string('type')->default("mcq");
+        Schema::table('questions', function (Blueprint $table) {
+            $table->string('title')->default("some title");
         });
     }
 
