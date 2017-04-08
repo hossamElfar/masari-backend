@@ -112,7 +112,7 @@ class UserController extends Controller
                 return $data;
                 break;
             case "kteer":
-                $questions = $assessment->questions()->get();
+                $questions = $assessment->questions()->get()[0];
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
                 foreach ($questions as $question) {
@@ -459,12 +459,10 @@ class UserController extends Controller
             foreach ($answers as $index => $answer) {
                 if ($answer != -1) {
                     $question = Question::findOrFail($question_id);
-                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index, 'answer_content' => 'multi assessment']);
-                    $answer_db->save();
-
+                    $answer_db = Answer::find($answer['$answer_id']);
                     $question->answers()->save($answer_db);
                     $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
+                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer['answer_id'], 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
                     $grade->save();
                 }
             }
