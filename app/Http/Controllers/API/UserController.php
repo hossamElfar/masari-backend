@@ -77,6 +77,7 @@ class UserController extends Controller
     public function getAssessment($id)
     {
         $assessment = Questionnaire::findOrFail($id);
+       // dd($assessment->type);
         switch ($assessment->type) {
             case "mcq":
                 $questions = $assessment->questions()->get();
@@ -96,6 +97,7 @@ class UserController extends Controller
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
+            default: return null;
         }
 
     }

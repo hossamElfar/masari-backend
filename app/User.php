@@ -147,26 +147,28 @@ class User extends Authenticatable
     {
         $assessment = Questionnaire::find($id);
         $returned = [];
-        $answers = $assessment->answers()->get();
-        for ($n = 7; $n >= 1; $n--) {
-            if (sizeof($returned) >= 10) {
-                break;
-            }
-            foreach ($answers as $answer) {
-                if ($answer->points == $n) {
-                    array_push($returned, $answer);
-                }
-            }
+        $answers = $this->grades()->where('questionnaire_id', $id)->get();
+        return $answers;
+//        for ($n = 7; $n >= 1; $n--) {
+//
+//            foreach ($answers as $answer) {
+//                if ($answer->points == $n) {
+//                    array_push($returned, $answer);
+//                }
+//            }
+//            if (sizeof($returned) >= 10) {
+//                return $returned;
+//            }
+//
+//        }
 
-        }
-        return $returned;
     }
 
     public function getScoresOfValuesQuestionnareSorted($id)
     {
         $assessment = Questionnaire::find($id);
-       // dd($assessment->values()->get());
-        $values = $assessment->values()->where('user_id',$this->id)->get()->sortBy('rank');
+        // dd($assessment->values()->get());
+        $values = $assessment->values()->where('user_id', $this->id)->get()->sortBy('rank');
         return $values;
     }
 
