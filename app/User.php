@@ -173,7 +173,7 @@ class User extends Authenticatable
     {
         $assessment = Questionnaire::find($id);
         // dd($assessment->values()->get());
-        $values = $assessment->values()->where('user_id', $this->id)->get()->sortBy('rank');
+        $values = $assessment->values()->where('user_id', $this->id)->get()->sortBy('rank')->unique();
         return $values;
     }
 

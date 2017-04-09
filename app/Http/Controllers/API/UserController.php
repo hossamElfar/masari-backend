@@ -283,6 +283,7 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfValuesQuestionnareSorted($assessmen_id);
                 return $data;
                 break;
+            
             default:
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
