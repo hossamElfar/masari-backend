@@ -490,7 +490,7 @@ class UserController extends Controller
             foreach ($answers as $index => $answer) {
                 if ($answer != -1) {
                     $question = Question::findOrFail($question_id);
-                    $answer_db = Answer::find($answer['$answer_id']);
+                    $answer_db = Answer::find($answer);
                     $question->answers()->save($answer_db);
                     $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
                     $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer['answer_id'], 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
