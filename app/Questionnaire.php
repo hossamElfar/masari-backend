@@ -27,4 +27,9 @@ class Questionnaire extends Model
     {
         return $this->hasMany('App\Value');
     }
+
+    public function grades()
+    {
+        return $this->hasMany('App\Grade');
+    }
 }
