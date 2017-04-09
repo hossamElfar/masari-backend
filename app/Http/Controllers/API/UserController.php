@@ -290,6 +290,20 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfMultiQuestionnare($assessmen_id);
                 return $data;
                 break;
+            case "kteer":
+                $user = User::find($user_db->id);
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = $user->getScoresOfKteerQuestionnare($assessmen_id);
+                return $data;
+                break;
+            case "text":
+                $user = User::find($user_db->id);
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = $user->getScoresOfTextQuestionnare($assessmen_id);
+                return $data;
+                break;
             
             default:
                 $data['statues'] = "200 Ok";
