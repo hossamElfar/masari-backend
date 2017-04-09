@@ -483,8 +483,6 @@ class UserController extends Controller
         $questionnaire = Questionnaire::find($data['questionnaire_id']);
         $questionnaire->user()->attach($user);
         $question_id = $data['question_id'];
-        $questionnaire_id = $data['questionnaire_id'];
-
         foreach ($data['Answers'] as $index => $answer) {
             if ($answer != -1) {
                 $question = Question::findOrFail($question_id);
@@ -495,7 +493,6 @@ class UserController extends Controller
                 $grade->save();
             }
         }
-
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
