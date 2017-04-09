@@ -304,7 +304,7 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfTextQuestionnare($assessmen_id);
                 return $data;
                 break;
-            
+
             default:
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
@@ -480,24 +480,22 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
-        $questionnaire_out = Questionnaire::find($data['questionnaire_id']);
-        $questionnaire_out->user()->attach($user);
-        foreach ($data as $grade) {
-            $question_id = $grade['question_id'];
-            $questionnaire_id = $grade['questionnaire_id'];
-            $questionnare = Questionnaire::find($questionnaire_id);
-            $answers = $grade['Answers'];
-            foreach ($answers as $index => $answer) {
-                if ($answer != -1) {
-                    $question = Question::findOrFail($question_id);
-                    $answer_db = Answer::find($answer);
-                    $question->answers()->save($answer_db);
-                    $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer['answer_id'], 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
-                    $grade->save();
-                }
+        $questionnaire = Questionnaire::find($data['questionnaire_id']);
+        $questionnaire->user()->attach($user);
+        $question_id = $data['question_id'];
+        $questionnaire_id = $data['questionnaire_id'];
+
+        foreach ($data['Answers'] as $index => $answer) {
+            if ($answer != -1) {
+                $question = Question::findOrFail($question_id);
+                $answer_db = Answer::find($answer);
+                $question->answers()->save($answer_db);
+                $questionnaire->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer['answer_id'], 'questionnaire_id' => $questionnaire->id, 'score' => $index, 'category' => "kteer"]);
+                $grade->save();
             }
         }
+
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
