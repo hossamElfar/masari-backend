@@ -407,10 +407,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
+        $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
+        $questionnaire_out->user()->attach($user);
         foreach ($data as $grade) {
             $question_id = $grade['question_id'];
             $questionnaire_id = $grade['questionnaire_id'];
             $questionnare = Questionnaire::find($questionnaire_id);
+
+            $questionnare->user()->attach($user);
             $answers = $grade['Answers'];
             foreach ($answers as $index => $answer) {
                 if ($answer != -1) {
@@ -441,11 +445,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
+        $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
+        $questionnaire_out->user()->attach($user);
         foreach ($data as $grade) {
             if ($grade['enable'] == true) {
                 $question_id = $grade['question_id'];
                 $questionnaire_id = $grade['questionnaire_id'];
                 $questionnare = Questionnaire::find($questionnaire_id);
+                $questionnare->user()->attach($user);
                 $question = Question::findOrFail($question_id);
                 $answer_db = new Answer(['question_id' => $question_id, 'points' => -1, 'answer_content' => $grade['answer']]);
                 $answer_db->save();
@@ -473,6 +480,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
+        $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
+        $questionnaire_out->user()->attach($user);
         foreach ($data as $grade) {
             $question_id = $grade['question_id'];
             $questionnaire_id = $grade['questionnaire_id'];
