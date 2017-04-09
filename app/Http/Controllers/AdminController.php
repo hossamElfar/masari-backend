@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
 use App\News;
+use App\Program;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +18,10 @@ class AdminController extends Controller
 
     public function getUnverifiedNews()
     {
-        $news = DB::table('news')->get();
+        $news = News::all();
+        foreach ($news as $n){
+            $n['by'] = $n->user()->get()[0];
+        }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['news'] = $news;
@@ -23,7 +29,10 @@ class AdminController extends Controller
     }
     public function getUnverifiedVideos()
     {
-        $news = DB::table('videos')->get();
+        $news = Video::all();
+        foreach ($news as $n){
+            $n['by'] = $n->user()->get()[0];
+        }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['videos'] = $news;
@@ -31,7 +40,10 @@ class AdminController extends Controller
     }
     public function getUnverifiedEvents()
     {
-        $news = DB::table('events')->get();
+        $news = Event::all();
+        foreach ($news as $n){
+            $n['by'] = $n->user()->get()[0];
+        }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['events'] = $news;
@@ -39,7 +51,10 @@ class AdminController extends Controller
     }
     public function getUnverifiedPrograms()
     {
-        $news = DB::table('programs')->get();
+        $news = Program::all();
+        foreach ($news as $n){
+            $n['by'] = $n->user()->get()[0];
+        }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['programs'] = $news;
