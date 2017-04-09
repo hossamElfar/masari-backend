@@ -185,9 +185,9 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Get unverified events
      */
-    Route::get('admin/events','AdminController@getUnverifiedNews');
+    Route::get('admin/events','AdminController@getUnverifiedEvents');
     /**
      * Get unverified news
      */
-    Route::get('admin/programs','AdminController@getUnverifiedNews');
+    Route::get('admin/programs','AdminController@getUnverifiedPrograms');
 });
