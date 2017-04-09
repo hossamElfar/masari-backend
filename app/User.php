@@ -177,6 +177,13 @@ class User extends Authenticatable
         return $values;
     }
 
+    public function getScoresOfMultiQuestionnare($id)
+    {
+        $questionnaire = Questionnaire::find($id);
+        $values = $questionnaire->values()->where('user_id',$this->id)->get();
+        return $values;
+    }
+
 
     public function values()
     {
