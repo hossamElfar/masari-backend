@@ -480,7 +480,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $data = $request->all();
-        $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
+        $questionnaire_out = Questionnaire::find($data['questionnaire_id']);
         $questionnaire_out->user()->attach($user);
         foreach ($data as $grade) {
             $question_id = $grade['question_id'];
