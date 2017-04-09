@@ -174,5 +174,20 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Remove a assessment the user has taken
      */
     Route::get('admin/users/remove/{user_code}','API\UserController@removeUserAssessment');
-
+    /**
+     * Get unverified news
+     */
+    Route::get('admin/news','AdminController@getUnverifiedNews');
+    /**
+     * Get unverified videos
+     */
+    Route::get('admin/videos','AdminController@getUnverifiedVideos');
+    /**
+     * Get unverified events
+     */
+    Route::get('admin/events','AdminController@getUnverifiedNews');
+    /**
+     * Get unverified news
+     */
+    Route::get('admin/programs','AdminController@getUnverifiedNews');
 });

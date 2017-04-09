@@ -27,7 +27,9 @@ class admin
         if ($token) {
             try {
                 $var = JWTAuth::decode(new Token($token));
+                //dd($var);
                 $user = User::findOrFail($var['id']);
+
                 if (Bouncer::is($user)->an('admin')) {
                     Auth::setUser($user);
                 } else {
