@@ -489,7 +489,7 @@ class UserController extends Controller
                 $answer_db = Answer::findOrFail($answer);
                 $question->answers()->save($answer_db);
                 $questionnaire->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer['answer_id'], 'questionnaire_id' => $questionnaire->id, 'score' => $index, 'category' => "kteer"]);
+                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer, 'questionnaire_id' => $questionnaire->id, 'score' => $index, 'category' => "kteer"]);
                 $grade->save();
             }
         }
