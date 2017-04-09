@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function getUnverifiedNews()
     {
         $news = News::all();
-        foreach ($news as $n){
+        foreach ($news as $n) {
             $n['by'] = $n->user()->get()[0];
         }
         $data['statues'] = "200 Ok";
@@ -27,10 +27,11 @@ class AdminController extends Controller
         $data['data']['news'] = $news;
         return response()->json($data, 200);
     }
+
     public function getUnverifiedVideos()
     {
         $news = Video::all();
-        foreach ($news as $n){
+        foreach ($news as $n) {
             $n['by'] = $n->user()->get()[0];
         }
         $data['statues'] = "200 Ok";
@@ -38,21 +39,25 @@ class AdminController extends Controller
         $data['data']['videos'] = $news;
         return response()->json($data, 200);
     }
+
     public function getUnverifiedEvents()
     {
         $news = Event::all();
-        foreach ($news as $n){
-            $n['by'] = $n->user()->get()[0];
+        foreach ($news as $n) {
+            if ($n->user() != null) {
+                $n['by'] = $n->user()->get();
+            }
         }
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['events'] = $news;
         return response()->json($data, 200);
     }
+
     public function getUnverifiedPrograms()
     {
         $news = Program::all();
-        foreach ($news as $n){
+        foreach ($news as $n) {
             $n['by'] = $n->user()->get()[0];
         }
         $data['statues'] = "200 Ok";
