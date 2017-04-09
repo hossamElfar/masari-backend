@@ -143,6 +143,7 @@ class NewsController extends Controller
     {
         $news = News::findOrFail($id);
         $news->verified = true;
+        $news->save();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data'] = $news;

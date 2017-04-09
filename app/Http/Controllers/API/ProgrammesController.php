@@ -175,6 +175,7 @@ class ProgrammesController extends Controller
             return response()->json($data, 404);
         } else {
             $news->verified = true;
+            $news->save();
             $data['statues'] = "200 Ok";
             $data['error'] = null;
             $data['data'] = $news;
