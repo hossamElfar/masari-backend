@@ -147,6 +147,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::post('experts/add/timing','API\ScheduleController@addTiming');
     /**
+     * Get expert timings
+     */
+    Route::get('experts/timings/me','API\ScheduleController@getTimingsExpert');
+    /**
      * Get a list of requested timings
      */
     Route::get('experts/get/requested','API\ScheduleController@requestedTiming');

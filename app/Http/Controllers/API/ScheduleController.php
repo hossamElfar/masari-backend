@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('getExperts', 'reserveExpert');
-        $this->middleware('expert')->only('addTiming', 'requestedTiming','approvedTiming','approveTiming');
+        $this->middleware('expert')->only('addTiming', 'requestedTiming', 'approvedTiming', 'approveTiming','getTimingsExpert');
         //$this->middleware('admin')->only('verify');
     }
 
@@ -144,7 +144,7 @@ class ScheduleController extends Controller
 
     /**
      * Approve a request
-     * 
+     *
      * @param $request_id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -165,5 +165,15 @@ class ScheduleController extends Controller
             $data1['data']['request'] = $request;
             return response()->json($data1, 200);
         }
+    }
+
+    public function getTimingsExpert()
+    {
+        $user = Auth::user();
+        $returned = $user->timings()->get();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $returned;
+        return response()->json($data1, 200);
     }
 }

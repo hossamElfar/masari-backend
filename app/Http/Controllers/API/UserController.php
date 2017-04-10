@@ -494,4 +494,5 @@ class UserController extends Controller
         $data1['data'] = null;
         return response()->json($data1, 200);
     }
+    
 }
