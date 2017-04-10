@@ -180,19 +180,24 @@ class User extends Authenticatable
     public function getScoresOfMultiQuestionnare($id)
     {
         $questionnaire = Questionnaire::find($id);
-        $values = $questionnaire->grades()->where('user_id',$this->id)->get();
+        $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         return $values;
     }
+
     public function getScoresOfKteerQuestionnare($id)
     {
         $questionnaire = Questionnaire::find($id);
-        $values = $questionnaire->grades()->where('user_id',$this->id)->get();
+        $values = $questionnaire->grades()->where('user_id', $this->id)->get();
+        foreach ($values as $value){
+            $value['question']= $value->answer()->get()[0]->question()->get()[0];
+        }
         return $values;
     }
+
     public function getScoresOfTextQuestionnare($id)
     {
         $questionnaire = Questionnaire::find($id);
-        $values = $questionnaire->grades()->where('user_id',$this->id)->get();
+        $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         return $values;
     }
 
