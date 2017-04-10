@@ -190,10 +190,10 @@ class User extends Authenticatable
         foreach ($values as $value) {
             $question = $value->answer()->get()[0]->question()->get()[0];
             if (array_key_exists(''.$question->id, $demo)){
-                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
+                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get()[0]);
             }else{
                 $demo[''.$question->id] = array();
-                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
+                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get()[0]);
             }
 
         }
