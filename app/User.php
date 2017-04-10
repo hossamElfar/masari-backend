@@ -185,17 +185,17 @@ class User extends Authenticatable
         $questionnaire = Questionnaire::find($id);
         $question_ids = [];
         $returned = [];
-        $demo = [];
+        $demo = array();
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value) {
 //            $value['answer_content'] = $value->answer()->get()[0];
             $question = $value->answer()->get()[0]->question()->get()[0];
-            $item_array = $demo[''.$question->id];
+           // $item_array = $demo[$question->id];
             if (is_array($demo[$question->id])){
-                array_push($item_array,$question->answers()->where('id',$value['answer_id'])->get());
+                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }else{
-                $item_array = [];
-                array_push($item_array,$question->answers()->where('id',$value['answer_id'])->get());
+                $demo[$question->id] = array();
+                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }
 
 
