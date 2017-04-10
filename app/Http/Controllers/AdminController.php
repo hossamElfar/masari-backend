@@ -6,6 +6,7 @@ use App\Answer;
 use App\Event;
 use App\News;
 use App\Program;
+use App\Q;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,10 +70,10 @@ class AdminController extends Controller
 
     public function getUnverifiedQuestions()
     {
-        $news = DB::table('qs')->orderBy('created_at', 'desc');
+        $news = Q::all()->sortByDesc('created_at');
         $data['statues'] = "200 Ok";
         $data['error'] = null;
-        foreach ($news['data'] as $question) {
+        foreach ($news as $question) {
             $question1 = Q::find($question->id);
             $answers = $question1->answers()->count();
             $question->no_of_answers = $answers;
