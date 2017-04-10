@@ -188,37 +188,21 @@ class User extends Authenticatable
         $demo = array();
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value) {
-//            $value['answer_content'] = $value->answer()->get()[0];
             $question = $value->answer()->get()[0]->question()->get()[0];
-           // $item_array = $demo[$question->id];
             if (array_key_exists(''.$question->id, $demo)){
                 array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }else{
                 $demo[''.$question->id] = array();
                 array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }
-//            if (is_array($demo[$question->id])){
-//                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
-//            }else{
-//                $demo[$question->id] = array();
-//                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
-//            }
 
-
-           // array_push($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
         }
-        return $demo;
-//        $uniques_ids = array_unique($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
-//        foreach ($uniques_ids as $id) {
-//            $question = Question::find($id);
-//            foreach ($values as $answer) {
-//                $question['answers'] = $question->answers()->where('id', $answer['answer_id'])->get();
-//                array_push($returned, $question);
-//            }
-//
-//        }
-       // return $returned;
-
+        foreach ($demo as $key => $ret){
+            $question = Question::find($key);
+            $question['answers'] = $ret;
+            array_push($returned,$question);
+        }
+        return $returned;
     }
 
     public function getScoresOfKteerQuestionnare($id)
