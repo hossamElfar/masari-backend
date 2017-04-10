@@ -196,7 +196,7 @@ class AdminController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
             'birth_date'=>'required',
-            'gender'=>'gender',
+            'gender'=>'required',
             'city'=>'required',
             'country'=>'required'
         ]);
