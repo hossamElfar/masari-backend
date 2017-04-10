@@ -202,4 +202,8 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Verify an answer
      */
     Route::get('admin/questions/answers/{id}','AdminController@verifyAnswer');
+    /**
+     * get user's assessments
+     */
+    Route::get('admin/users/assessments/{user_code}','AdminController@getUserAssessments');
 });

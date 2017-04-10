@@ -8,6 +8,7 @@ use App\Event;
 use App\News;
 use App\Program;
 use App\Q;
+use App\User;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -106,7 +107,7 @@ class AdminController extends Controller
     public function verifyAnswer($id)
     {
         $answer = A::find($id);
-        if ($answer == null){
+        if ($answer == null) {
             $data['statues'] = "404 not found";
             $data['error'] = "404";
             $data['data'] = null;
@@ -117,6 +118,16 @@ class AdminController extends Controller
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data'] = null;
+        return response()->json($data, 200);
+    }
+
+    public function getUserAssessments($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $user = User::find($user_db->id);
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data']['assessments'] = $user->questioners()->get();
         return response()->json($data, 200);
     }
 }
