@@ -174,7 +174,6 @@ class AdminController extends Controller
                 'country' => $data['country'],
                 'city' => $data['city'],
                 'gender'=>$data['gender'],
-                'age' => $data['age'],
                 'birth_date' => $data['birth_date'],
                 'password' => bcrypt($data['password']),
                 'code' => $confirmation_code,
@@ -182,7 +181,8 @@ class AdminController extends Controller
                 'confirmed' => true
             ]);
         } catch (\Exception $e) {
-            $this->create($data);
+            throw $e;
+            //$this->create($data);
         }
         return $user;
     }
