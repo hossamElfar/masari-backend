@@ -122,13 +122,20 @@ class User extends Authenticatable
     {
         $grades = $this->grades()->where('questionnaire_id', $questionnare_id)->get();
         $returned = [];
+        $returned1 = [];
         foreach ($grades as $grade) {
             $returned[$grade->category] = 0;
         }
         foreach ($grades as $grade) {
             $returned[$grade->category] = $returned[$grade->category] + $grade->score;
         }
-        return $returned;
+        foreach ($returned as $key => $value) {
+           $d = [];
+            $d['category']= $key;
+            $d['score'] = $value;
+            array_push($returned1,$d);
+        }
+        return $returned1;
     }
 
     public function isAssessmentTake(Questionnaire $q)
@@ -189,18 +196,18 @@ class User extends Authenticatable
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value) {
             $question = $value->answer()->get()[0]->question()->get()[0];
-            if (array_key_exists(''.$question->id, $demo)){
-                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get()[0]);
-            }else{
-                $demo[''.$question->id] = array();
-                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get()[0]);
+            if (array_key_exists('' . $question->id, $demo)) {
+                array_push($demo[$question->id], $question->answers()->where('id', $value['answer_id'])->get()[0]);
+            } else {
+                $demo['' . $question->id] = array();
+                array_push($demo[$question->id], $question->answers()->where('id', $value['answer_id'])->get()[0]);
             }
 
         }
-        foreach ($demo as $key => $ret){
+        foreach ($demo as $key => $ret) {
             $question = Question::find($key);
             $question['answers'] = $ret;
-            array_push($returned,$question);
+            array_push($returned, $question);
         }
         return $returned;
     }
