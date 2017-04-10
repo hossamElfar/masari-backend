@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\A;
 use App\Answer;
 use App\Event;
 use App\News;
@@ -104,7 +105,7 @@ class AdminController extends Controller
 
     public function verifyAnswer($id)
     {
-        $answer = Answer::find($id);
+        $answer = A::find($id);
         if ($answer == null){
             $data['statues'] = "404 not found";
             $data['error'] = "404";
