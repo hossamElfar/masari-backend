@@ -210,4 +210,12 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Remove user's assessments
      */
     Route::get('admin/users/remove/assessments/{user_code}','AdminController@removeUserAssessments');
+    /**
+     * Register a new low admin
+     */
+    Route::post('admin/create/low','AdminController@registerLow');
+    /**
+     * Register a new high admin
+     */
+    Route::post('admin/create/high','AdminController@registerHigh');
 });
