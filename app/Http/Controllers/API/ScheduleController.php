@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('getExperts', 'reserveExpert');
-        $this->middleware('expert')->only('addTiming', 'requestedTiming', 'approvedTiming', 'approveTiming','getTimingsExpert');
+        $this->middleware('expert')->only('addTiming', 'requestedTiming', 'approvedTiming', 'approveTiming', 'getTimingsExpert');
         //$this->middleware('admin')->only('verify');
     }
 
@@ -121,6 +121,9 @@ class ScheduleController extends Controller
     {
         $user = Auth::user();
         $requested_timings = $user->request_expert()->where('reserved', '!=', true)->get();
+        foreach ($requested_timings as $timing) {
+            $timing['timing']= $timing->timing()->get()[0];
+        }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $requested_timings;
@@ -136,6 +139,9 @@ class ScheduleController extends Controller
     {
         $user = Auth::user();
         $approved_timings = $user->request_expert()->where('reserved', true)->get();
+        foreach ($approved_timings as $timing) {
+            $timing['timing']= $timing->timing()->get()[0];
+        }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $approved_timings;
