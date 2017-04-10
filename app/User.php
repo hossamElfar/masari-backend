@@ -174,6 +174,9 @@ class User extends Authenticatable
         $assessment = Questionnaire::find($id);
         // dd($assessment->values()->get());
         $values = $assessment->values()->where('user_id', $this->id)->get()->sortBy('rank')->unique();
+        foreach ($values as $value) {
+            $value['question'] = $value->question()->get()[0];
+        }
         return $values;
     }
 
@@ -181,6 +184,10 @@ class User extends Authenticatable
     {
         $questionnaire = Questionnaire::find($id);
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
+        foreach ($values as $value) {
+            $value['answer_content'] = $value->answer()->get()[0];
+            $value['question'] = $value->answer()->get()[0]->question()->get()[0];
+        }
         return $values;
     }
 
@@ -188,9 +195,9 @@ class User extends Authenticatable
     {
         $questionnaire = Questionnaire::find($id);
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
-        foreach ($values as $value){
-            $value['answer_content']= $value->answer()->get()[0];
-            $value['question']= $value->answer()->get()[0]->question()->get()[0];
+        foreach ($values as $value) {
+            $value['answer_content'] = $value->answer()->get()[0];
+            $value['question'] = $value->answer()->get()[0]->question()->get()[0];
         }
         return $values;
     }
@@ -199,6 +206,10 @@ class User extends Authenticatable
     {
         $questionnaire = Questionnaire::find($id);
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
+        foreach ($values as $value) {
+            $value['answer_content'] = $value->answer()->get()[0];
+            $value['question'] = $value->answer()->get()[0]->question()->get()[0];
+        }
         return $values;
     }
 
