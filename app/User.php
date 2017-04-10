@@ -183,12 +183,16 @@ class User extends Authenticatable
     public function getScoresOfMultiQuestionnare($id)
     {
         $questionnaire = Questionnaire::find($id);
+        $returned = [];
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value) {
             $value['answer_content'] = $value->answer()->get()[0];
             $value['question'] = $value->answer()->get()[0]->question()->get()[0];
+            $value['question']['answers']= $value['question']->answers()->get();
+            array_push($returned,$value);
         }
-        return $values;
+        $result = array_unique($returned);
+        return $result;
     }
 
     public function getScoresOfKteerQuestionnare($id)
