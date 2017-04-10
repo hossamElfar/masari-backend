@@ -409,12 +409,11 @@ class UserController extends Controller
         $data = $request->all();
         $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
         $questionnaire_out->user()->attach($user);
+
         foreach ($data as $grade) {
             $question_id = $grade['question_id'];
             $questionnaire_id = $grade['questionnaire_id'];
             $questionnare = Questionnaire::find($questionnaire_id);
-
-            $questionnare->user()->attach($user);
             $answers = $grade['Answers'];
             foreach ($answers as $index => $answer) {
                 if ($answer != -1) {
