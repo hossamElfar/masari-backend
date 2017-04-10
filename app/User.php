@@ -189,6 +189,7 @@ class User extends Authenticatable
         $questionnaire = Questionnaire::find($id);
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value){
+            $value['answer_content']= $value->answer()->get()[0];
             $value['question']= $value->answer()->get()[0]->question()->get()[0];
         }
         return $values;
