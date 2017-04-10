@@ -8,10 +8,12 @@ use App\Event;
 use App\News;
 use App\Program;
 use App\Q;
+use App\Questionnaire;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
@@ -128,6 +130,20 @@ class AdminController extends Controller
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data']['assessments'] = $user->questioners()->get();
+        return response()->json($data, 200);
+    }
+
+    public function removeUserAssessments($user_code)
+    {
+        $user_db = DB::table('users')->where('code', $user_code)->first();
+        $user = User::find($user_db->id);
+        $assessment_id = Input::get('assessment_id');
+        $q = Questionnaire::find($assessment_id);
+        $q->user()->detach($user);
+        $q->grades()->where('user_id',$user->id)->delete();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
         return response()->json($data, 200);
     }
 }

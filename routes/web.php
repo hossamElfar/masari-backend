@@ -206,4 +206,8 @@ Route::group(['prefix' => 'api/v1'], function () {
      * get user's assessments
      */
     Route::get('admin/users/assessments/{user_code}','AdminController@getUserAssessments');
+    /**
+     * Remove user's assessments
+     */
+    Route::get('admin/users/remove/assessments/{user_code}','AdminController@removeUserAssessments');
 });
