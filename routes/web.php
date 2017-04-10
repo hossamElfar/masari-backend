@@ -190,4 +190,16 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Get unverified news
      */
     Route::get('admin/programs','AdminController@getUnverifiedPrograms');
+    /**
+     * Get unverified questions
+     */
+    Route::get('admin/questions','AdminController@getUnverifiedQuestions');
+    /**
+     * Get unverified questions and answers
+     */
+    Route::get('admin/questions/{id}','AdminController@getUnverifiedQuestionAndAnswers');
+    /**
+     * Verify an answer
+     */
+    Route::get('admin/questions/answers/{id}','AdminController@verifyAnswer');
 });
