@@ -36,7 +36,7 @@ class ProgrammesController extends Controller
             $news = DB::table('programs')->where('verified', true)->orderBy('created_at','desc')->paginate(7);
             $data['statues'] = "200 Ok";
             $data['error'] = null;
-            $data['data']['programmes'] = $news;
+            $data['data']['programs'] = $news;
             return response()->json($data, 200);
         }
     }

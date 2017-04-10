@@ -190,8 +190,8 @@ class User extends Authenticatable
         foreach ($values as $value) {
 //            $value['answer_content'] = $value->answer()->get()[0];
             $question = $value->answer()->get()[0]->question()->get()[0];
-            $item_array = $demo[$question->id];
-            if (is_array($item_array)){
+            $item_array = $demo[''.$question->id];
+            if (is_array($demo[$question->id])){
                 array_push($item_array,$question->answers()->where('id',$value['answer_id'])->get());
             }else{
                 $item_array = [];
@@ -211,7 +211,7 @@ class User extends Authenticatable
 //            }
 //
 //        }
-        return $returned;
+       // return $returned;
 
     }
 
