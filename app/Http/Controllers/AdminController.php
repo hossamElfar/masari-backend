@@ -15,8 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Bouncer;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Validator;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -172,6 +171,10 @@ class AdminController extends Controller
                 'second_name' => $data['second_name'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
+                'country' => $data['country'],
+                'city' => $data['city'],
+                'age' => $data['age'],
+                'birth_date' => $data['birth_date'],
                 'password' => bcrypt($data['password']),
                 'code' => $confirmation_code,
                 'user_level' => "0",
@@ -191,6 +194,9 @@ class AdminController extends Controller
             'phone' => 'required|max:20',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+            'birth_date'=>'required',
+            'city'=>'required',
+            'country'=>'required'
         ]);
     }
 
