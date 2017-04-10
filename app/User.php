@@ -197,7 +197,7 @@ class User extends Authenticatable
         foreach ($uniques_ids as $id) {
             $question = Question::find($id);
             foreach ($values as $answer) {
-                $question['answers'] = $question->answers()->where('id', $answer['answer_id']);
+                $question['answers'] = $question->answers()->where('id', $answer['answer_id'])->get();
                 array_push($returned, $question);
             }
 
