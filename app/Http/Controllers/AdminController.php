@@ -69,7 +69,7 @@ class AdminController extends Controller
 
     public function getUnverifiedQuestions()
     {
-        $news = DB::table('qs')->orderBy('created_at', 'desc')->toArray();
+        $news = DB::table('qs')->orderBy('created_at', 'desc');
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($news['data'] as $question) {
