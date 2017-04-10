@@ -191,12 +191,18 @@ class User extends Authenticatable
 //            $value['answer_content'] = $value->answer()->get()[0];
             $question = $value->answer()->get()[0]->question()->get()[0];
            // $item_array = $demo[$question->id];
-            if (is_array($demo[$question->id])){
+            if (array_key_exists(''.$question->id, $demo)){
                 array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }else{
-                $demo[$question->id] = array();
+                $demo[''.$question->id] = array();
                 array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
             }
+//            if (is_array($demo[$question->id])){
+//                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
+//            }else{
+//                $demo[$question->id] = array();
+//                array_push($demo[$question->id],$question->answers()->where('id',$value['answer_id'])->get());
+//            }
 
 
            // array_push($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
