@@ -157,6 +157,7 @@ class ScheduleController extends Controller
     public function approveTiming($request_id)
     {
         $request = \App\Request::findOrFail($request_id);
+        $timing = Timing::find($request->timing_id);
         if ($request->reserved == true) {
             $data1['statues'] = "302";
             $data1['error'] = "Already reserved";
@@ -165,7 +166,9 @@ class ScheduleController extends Controller
         } else {
             $request->reserved = true;
             $request->accepted = true;
+            $timing->reserved=true;
             $request->save();
+            $timing->save();
             $data1['statues'] = "200 Ok";
             $data1['error'] = null;
             $data1['data']['request'] = $request;
