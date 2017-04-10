@@ -185,23 +185,32 @@ class User extends Authenticatable
         $questionnaire = Questionnaire::find($id);
         $question_ids = [];
         $returned = [];
+        $demo = [];
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
         foreach ($values as $value) {
 //            $value['answer_content'] = $value->answer()->get()[0];
-//            $value['question'] = $value->answer()->get()[0]->question()->get()[0];
-//            $value['question']['answers']= $value['question']->answers()->where('id',$value['answer_id'])->get();
-//            array_push($returned,$value);
-            array_push($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
-        }
-        $uniques_ids = array_unique($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
-        foreach ($uniques_ids as $id) {
-            $question = Question::find($id);
-            foreach ($values as $answer) {
-                $question['answers'] = $question->answers()->where('id', $answer['answer_id'])->get();
-                array_push($returned, $question);
+            $question = $value->answer()->get()[0]->question()->get()[0];
+            $item_array = $demo[$question->id];
+            if (is_array($item_array)){
+                array_push($item_array,$question->answers()->where('id',$value['answer_id'])->get());
+            }else{
+                $item_array = [];
+                array_push($item_array,$question->answers()->where('id',$value['answer_id'])->get());
             }
 
+
+           // array_push($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
         }
+        return $demo;
+//        $uniques_ids = array_unique($question_ids, $value->answer()->get()[0]->question()->get()[0]->id);
+//        foreach ($uniques_ids as $id) {
+//            $question = Question::find($id);
+//            foreach ($values as $answer) {
+//                $question['answers'] = $question->answers()->where('id', $answer['answer_id'])->get();
+//                array_push($returned, $question);
+//            }
+//
+//        }
         return $returned;
 
     }
