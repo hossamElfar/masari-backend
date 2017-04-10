@@ -173,6 +173,7 @@ class AdminController extends Controller
                 'email' => $data['email'],
                 'country' => $data['country'],
                 'city' => $data['city'],
+                'gender'=>$data['gender'],
                 'age' => $data['age'],
                 'birth_date' => $data['birth_date'],
                 'password' => bcrypt($data['password']),
@@ -195,6 +196,7 @@ class AdminController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
             'birth_date'=>'required',
+            'gender'=>'gender',
             'city'=>'required',
             'country'=>'required'
         ]);
