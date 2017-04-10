@@ -188,7 +188,7 @@ class User extends Authenticatable
         foreach ($values as $value) {
             $value['answer_content'] = $value->answer()->get()[0];
             $value['question'] = $value->answer()->get()[0]->question()->get()[0];
-            $value['question']['answers']= $value['question']->answers()->get();
+            $value['question']['answers']= $value['question']->answers()->where('answer_id',$value['answer_id'])->get();
             array_push($returned,$value);
         }
         $result = array_unique($returned);
