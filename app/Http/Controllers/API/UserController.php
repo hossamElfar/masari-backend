@@ -450,15 +450,12 @@ class UserController extends Controller
         foreach ($data as $grade) {
             if ($grade['enable'] == true) {
                 $question_id = $grade['question_id'];
-                $questionnaire_id = $grade['questionnaire_id'];
-                $questionnare = Questionnaire::find($questionnaire_id);
-                $questionnare->user()->attach($user);
                 $question = Question::findOrFail($question_id);
                 $answer_db = new Answer(['question_id' => $question_id, 'points' => -1, 'answer_content' => $grade['answer']]);
                 $answer_db->save();
                 $question->answers()->save($answer_db);
-                $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "text"]);
+                $questionnaire_out->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnaire_out->id, 'score' => -1, 'category' => "text"]);
                 $grade->save();
             }
 
