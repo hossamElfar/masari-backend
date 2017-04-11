@@ -202,6 +202,11 @@ class ScheduleController extends Controller
         }
     }
 
+    /**
+     * Get The timings of an expert
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTimingsExpert()
     {
         $user = Auth::user();
@@ -212,6 +217,11 @@ class ScheduleController extends Controller
         return response()->json($data1, 200);
     }
 
+    /**
+     * Get client's approved meetings
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getClientsApprovedMeetings()
     {
         $user = Auth::user();
@@ -222,9 +232,14 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $requested_timings;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
+    /**
+     * Get client's requested meetings
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getClientsRequestedMeetings()
     {
         $user = Auth::user();
@@ -235,14 +250,14 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $requested_timings;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
     /**
      * Cancel a request
      *
      * @param $request_id
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function cancelTiming($request_id)
     {
@@ -256,14 +271,14 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
     /**
      * Remove a timing
      *
      * @param $timing_id
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function removeTiming($timing_id)
     {
@@ -273,6 +288,6 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
-        return $data1;
+        return response()->json($data1, 200);
     }
 }
