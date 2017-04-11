@@ -15,6 +15,7 @@
     <br>
     email of the expert is <h5>{{$expert->email}}</h5> the expert will contact you soon
     <br>
+    <br>
     Have a fruitful experience!
     <br>
     Regards,<br>

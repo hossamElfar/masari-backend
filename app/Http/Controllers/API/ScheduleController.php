@@ -56,7 +56,7 @@ class ScheduleController extends Controller
                 $timing_temp = Carbon::parse($timing->timing)->format('Y-m-d');
                 if ($date_temp == $timing_temp) {
                     $expert = $timing->expert()->get()[0];
-                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))&&($timing->reserved==false)) {
+                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))&&($timing->reserved==false)&&($timing->requested ==false)) {
                         $timing['expert'] = $expert;
                         array_push($timings_free, $timing);
                     }
@@ -89,6 +89,8 @@ class ScheduleController extends Controller
 
         if ($validator->fails())
             return response()->json($validator->errors(), 302);
+        $timing->requested = true;
+        $timing->save();
         $request->save();
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
