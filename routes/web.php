@@ -242,4 +242,8 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Register a new high admin
      */
     Route::post('admin/create/high','AdminController@registerHigh');
+    /**
+     * Seed arabic values assessment
+     */
+    Route::post('seed/values/ar','DbSeeders@seedValuesArabic');
 });
