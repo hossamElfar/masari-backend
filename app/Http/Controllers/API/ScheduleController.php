@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use \Validator;
 
 class ScheduleController extends Controller
@@ -182,6 +183,12 @@ class ScheduleController extends Controller
             $timing->reserved = true;
             $request->save();
             $timing->save();
+            $client = $request->client()->get()[0];
+            $expert = $request->expert()->get()[0];
+            Mail::send('auth.email.schedule', ['expert' => $expert, 'client' => $client,'timing'=>$timing->timing], function ($message) use ($client) {
+                $message->to($client->email, $client->first_name)
+                    ->subject('Meeting approval');
+            });
             $data1['statues'] = "200 Ok";
             $data1['error'] = null;
             $data1['data']['request'] = $request;
