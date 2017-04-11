@@ -143,6 +143,14 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('experts/{field_id}', 'API\ScheduleController@getExperts');
     /**
+     * Getting Approved meetings of a client
+     */
+    Route::get('client/timings/approved','API\ScheduleController@getClientsApprovedMeetings');
+    /**
+     * Get Requested meetings of a client
+     */
+    Route::get('client/timings/approved','API\ScheduleController@getClientsRequestedMeetings');
+    /**
      * Request a schedule meeting to an expert
      */
     Route::post('experts/{timing_id}','API\ScheduleController@reserveExpert');

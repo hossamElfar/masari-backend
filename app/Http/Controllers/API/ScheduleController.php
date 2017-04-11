@@ -188,4 +188,30 @@ class ScheduleController extends Controller
         $data1['data']['timings'] = $returned;
         return response()->json($data1, 200);
     }
+
+    public function getClientsApprovedMeetings()
+    {
+        $user = Auth::user();
+        $requested_timings = $user->request_client()->where('reserved', true)->get();
+        foreach ($requested_timings as $timing) {
+            $timing['timing'] = $timing->timing()->get()[0];
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $requested_timings;
+        return $data1;
+    }
+
+    public function getClientsRequestedMeetings()
+    {
+        $user = Auth::user();
+        $requested_timings = $user->request_client()->where('reserved', false)->get();
+        foreach ($requested_timings as $timing) {
+            $timing['timing'] = $timing->timing()->get()[0];
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['timings'] = $requested_timings;
+        return $data1;
+    }
 }
