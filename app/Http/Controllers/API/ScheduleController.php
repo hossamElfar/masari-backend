@@ -55,7 +55,7 @@ class ScheduleController extends Controller
                 $timing_temp = Carbon::parse($timing->timing)->format('Y-m-d');
                 if ($date_temp == $timing_temp) {
                     $expert = $timing->expert()->get()[0];
-                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))) {
+                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))&&($timing->reserved==false)) {
                         $timing['expert'] = $expert;
                         array_push($timings_free, $timing);
                     }
