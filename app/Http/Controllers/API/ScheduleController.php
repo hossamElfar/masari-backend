@@ -205,7 +205,7 @@ class ScheduleController extends Controller
     public function getTimingsExpert()
     {
         $user = Auth::user();
-        $returned = $user->timings()->sortByDesc('timing')->get();
+        $returned = $user->timings()->orderBy('timing','desc')->get();
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $returned;
