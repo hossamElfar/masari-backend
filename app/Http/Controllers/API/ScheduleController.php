@@ -114,7 +114,7 @@ class ScheduleController extends Controller
         $user = Auth::user();
         $data['user_id'] = $user->id;
         $data['reserved'] = false;
-        $validator = $this->validator($data);
+        $validator = $this->validatorUpdate($data);
         if ($validator->fails())
             return response()->json($validator->errors(), 302);
         $timing = new Timing($data);
