@@ -95,6 +95,12 @@ class ScheduleController extends Controller
         return response()->json($data1, 200);
     }
 
+    protected function validatorUpdate(array $data)
+    {
+        return Validator::make($data, [
+            'timing' => 'unique_with:timings,user_id'
+        ]);
+    }
     /**
      * Add a timing
      *
@@ -104,9 +110,13 @@ class ScheduleController extends Controller
     public function addTiming(Request $request)
     {
         $data = $request->all();
+
         $user = Auth::user();
         $data['user_id'] = $user->id;
         $data['reserved'] = false;
+        $validator = $this->validator($data);
+        if ($validator->fails())
+            return response()->json($validator->errors(), 302);
         $timing = new Timing($data);
         $timing->save();
         $data1['statues'] = "200 Ok";
