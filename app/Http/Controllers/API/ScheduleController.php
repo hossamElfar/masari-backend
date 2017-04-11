@@ -137,7 +137,7 @@ class ScheduleController extends Controller
     public function requestedTiming()
     {
         $user = Auth::user();
-        $requested_timings = $user->request_expert()->where('reserved', '!=', true)->sortByDesc('timing')->get();
+        $requested_timings = $user->request_expert()->where('reserved', '!=', true)->sortByDesc('created_at')->get();
         foreach ($requested_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
             $timing['requested_by'] = $timing->client()->get()[0];
@@ -156,7 +156,7 @@ class ScheduleController extends Controller
     public function approvedTiming()
     {
         $user = Auth::user();
-        $approved_timings = $user->request_expert()->where('reserved', true)->sortByDesc('timing')->get();
+        $approved_timings = $user->request_expert()->where('reserved', true)->sortByDesc('created_at')->get();
         foreach ($approved_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
             $timing['requested_by'] = $timing->client()->get()[0];
