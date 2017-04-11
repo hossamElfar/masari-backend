@@ -526,8 +526,7 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         $field = new Field($data);
-        $field->user_id = $user->id;
-        $field->save();
+        $user->fileds()->attach($field);
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['field'] = $field;
