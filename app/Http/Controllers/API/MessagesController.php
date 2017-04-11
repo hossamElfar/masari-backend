@@ -35,7 +35,7 @@ class MessagesController extends Controller
             $participants = $thread->participants()->get();
 
             foreach ($participants as $participant){
-                if (User::find($participant->id)->id != $thread->messUages()->orderBy('created_at','desc')->get()[0]->user_id){
+                if (User::find($participant->id)->id != $thread->messages()->orderBy('created_at','desc')->get()[0]->user_id){
                     $thread['receiver'] = User::find($participant->id);
                 }
             }
