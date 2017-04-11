@@ -233,6 +233,12 @@ class AuthAPIController extends Controller
     {
         $user = Auth::user();
         $t = $request->intersect(['first_name', 'second_name', 'phone', 'country', 'city', 'age', 'gender', 'pp']);
+        if ($t['country']){
+            $t['country']= strtolower($t['country']);
+        }
+        if ($t['city']){
+            $t['city']= strtolower($t['city']);
+        }
         // dd($t);
         //$t = $request->all();
         $validator = $this->validatorUpdate($t);
