@@ -31,7 +31,7 @@ class QsController extends Controller
         $data['error'] = null;
         foreach ($news['data'] as $question) {
             $question1 = Q::find($question->id);
-            if ($user->isNotA('client')){
+            if ($user->isAn('admin','ladmin','hadmin','expert')){
                 $answers = $question1->answers()->count();
             }else{
                 $answers = $question1->answers()->where('verified',true)->count();
