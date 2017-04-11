@@ -20,7 +20,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment','storeKteerAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
         $this->middleware('admin')->only('removeUserAssessment');
     }
@@ -494,5 +494,20 @@ class UserController extends Controller
         $data1['data'] = null;
         return response()->json($data1, 200);
     }
-    
+
+    public function getClients()
+    {
+        $users = User::all();
+        $returned = [];
+        foreach ($users as $user) {
+            if ($user->isA('client') && $user->isNotA('expert', 'admin', 'hadmin', 'ladmin')) {
+                array_push($returned,$user);
+            }
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['clients'] = $returned;
+        return response()->json($data1, 200);
+    }
+
 }
