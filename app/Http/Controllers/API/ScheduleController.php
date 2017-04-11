@@ -137,6 +137,7 @@ class ScheduleController extends Controller
         $requested_timings = $user->request_expert()->where('reserved', '!=', true)->get();
         foreach ($requested_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
+            $timing['requested_by'] = $timing->client()->get()[0];
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
@@ -155,6 +156,7 @@ class ScheduleController extends Controller
         $approved_timings = $user->request_expert()->where('reserved', true)->get();
         foreach ($approved_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
+            $timing['requested_by']= $timing->client()->get()[0];
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
