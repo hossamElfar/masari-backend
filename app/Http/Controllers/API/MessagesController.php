@@ -32,6 +32,13 @@ class MessagesController extends Controller
         $data['error'] = null;
         foreach ($threads as $thread) {
             $last_message = $thread->messages()->orderBy('created_at','desc')->get()[0]->body;
+            $participants = $thread->participants()->get();
+
+            foreach ($participants as $participant){
+                if (User::find($participant->id)->id != $thread->messUages()->orderBy('created_at','desc')->get()[0]->user_id){
+                    $thread['receiver'] = User::find($participant->id);
+                }
+            }
             $thread['last_message'] = $last_message;
             $thread['last_sender']= User::find($thread->messages()->orderBy('created_at','desc')->get()[0]->user_id);
         }
