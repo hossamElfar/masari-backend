@@ -56,7 +56,7 @@ class ScheduleController extends Controller
                 $timing_temp = Carbon::parse($timing->timing)->format('Y-m-d');
                 if ($date_temp == $timing_temp) {
                     $expert = $timing->expert()->get()[0];
-                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))&&($timing->reserved==false)&&($timing->requested ==false)) {
+                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city')) && ($timing->reserved == false) && ($timing->requested == false)) {
                         $timing['expert'] = $expert;
                         array_push($timings_free, $timing);
                     }
@@ -104,6 +104,7 @@ class ScheduleController extends Controller
             'timing' => 'unique_with:timings,user_id'
         ]);
     }
+
     /**
      * Add a timing
      *
@@ -158,7 +159,7 @@ class ScheduleController extends Controller
         $approved_timings = $user->request_expert()->where('reserved', true)->get();
         foreach ($approved_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
-            $timing['requested_by']= $timing->client()->get()[0];
+            $timing['requested_by'] = $timing->client()->get()[0];
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
@@ -189,7 +190,7 @@ class ScheduleController extends Controller
             $timing->save();
             $client = $request->client()->get()[0];
             $expert = $request->expert()->get()[0];
-            Mail::send('auth.email.schedule', ['expert' => $expert, 'client' => $client,'timing'=>$timing->timing], function ($message) use ($client) {
+            Mail::send('auth.email.schedule', ['expert' => $expert, 'client' => $client, 'timing' => $timing->timing], function ($message) use ($client) {
                 $message->to($client->email, $client->first_name)
                     ->subject('Meeting approval');
             });
@@ -233,6 +234,27 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $requested_timings;
+        return $data1;
+    }
+
+    /**
+     * Cancel a request
+     *
+     * @param $request_id
+     * @return mixed
+     */
+    public function cancelTiming($request_id)
+    {
+        $request = Request::find($request_id);
+        $timing = $request->timing()->get()[0];
+        $request->reserved = false;
+        $request->accespted = false;
+        $timing->requested = false;
+        $timing->save();
+        $request->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
         return $data1;
     }
 }
