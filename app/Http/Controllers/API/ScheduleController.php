@@ -109,7 +109,7 @@ class ScheduleController extends Controller
      * Add a timing
      *
      * @param Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function addTiming(Request $request)
     {
@@ -126,13 +126,13 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = $timing;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
     /**
      * Get the requested timings
      *
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function requestedTiming()
     {
@@ -146,13 +146,13 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $requested_timings;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
     /**
      * Get the approved timings
      *
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function approvedTiming()
     {
@@ -165,7 +165,7 @@ class ScheduleController extends Controller
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $approved_timings;
-        return $data1;
+        return response()->json($data1, 200);
     }
 
     /**
