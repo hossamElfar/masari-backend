@@ -173,7 +173,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Get all clients 
      */
-    Route::get('experts/clients/','API\UserController@getClients');
+    Route::get('experts/clients/all','API\UserController@getClients');
     /**
      * Get a list of assessments that a client hs taken
      */
