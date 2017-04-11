@@ -183,6 +183,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('experts/users/{user_code}','API\UserController@getUserAssessment');
     /**
+     * Create a new field
+     */
+    Route::post('experts/fields','API\UserController@addField');
+    /**
      * Remove a assessment the user has taken
      */
     Route::get('admin/users/remove/{user_code}','API\UserController@removeUserAssessment');

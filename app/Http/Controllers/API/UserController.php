@@ -21,7 +21,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment');
-        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment','getClients');
+        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment', 'getClients','addField');
         $this->middleware('admin')->only('removeUserAssessment');
     }
 
@@ -506,12 +506,31 @@ class UserController extends Controller
         $returned = [];
         foreach ($users as $user) {
             if ($user->isA('client') && $user->isNotA('expert', 'admin', 'hadmin', 'ladmin')) {
-                array_push($returned,$user);
+                array_push($returned, $user);
             }
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['clients'] = $returned;
+        return response()->json($data1, 200);
+    }
+
+    /**
+     * Add a field to the expert
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addField(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        $field = new Field($data);
+        $field->user_id = $user->id;
+        $field->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data']['field'] = $field;
         return response()->json($data1, 200);
     }
 
