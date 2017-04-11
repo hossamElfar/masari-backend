@@ -21,7 +21,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment');
-        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment');
+        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment','getClients');
         $this->middleware('admin')->only('removeUserAssessment');
     }
 
@@ -495,6 +495,11 @@ class UserController extends Controller
         return response()->json($data1, 200);
     }
 
+    /**
+     * Get a list of all clients
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getClients()
     {
         $users = User::all();
