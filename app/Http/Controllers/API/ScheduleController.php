@@ -137,7 +137,7 @@ class ScheduleController extends Controller
     public function requestedTiming()
     {
         $user = Auth::user();
-        $requested_timings = $user->request_expert()->where('reserved', '!=', true)->get();
+        $requested_timings = $user->request_expert()->where('reserved', '!=', true)->sortByDesc('timing')->get();
         foreach ($requested_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
             $timing['requested_by'] = $timing->client()->get()[0];
@@ -156,7 +156,7 @@ class ScheduleController extends Controller
     public function approvedTiming()
     {
         $user = Auth::user();
-        $approved_timings = $user->request_expert()->where('reserved', true)->get();
+        $approved_timings = $user->request_expert()->where('reserved', true)->sortByDesc('timing')->get();
         foreach ($approved_timings as $timing) {
             $timing['timing'] = $timing->timing()->get()[0];
             $timing['requested_by'] = $timing->client()->get()[0];
@@ -204,7 +204,7 @@ class ScheduleController extends Controller
     public function getTimingsExpert()
     {
         $user = Auth::user();
-        $returned = $user->timings()->get();
+        $returned = $user->timings()->sortByDesc('timing')->get();
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['timings'] = $returned;
@@ -252,6 +252,23 @@ class ScheduleController extends Controller
         $timing->requested = false;
         $timing->save();
         $request->save();
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return $data1;
+    }
+
+    /**
+     * Remove a timing
+     *
+     * @param $timing_id
+     * @return mixed
+     */
+    public function removeTiming($timing_id)
+    {
+        $timing = Timing::find($timing_id);
+        $timing->requests()->delete();
+        $timing->delete();
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;

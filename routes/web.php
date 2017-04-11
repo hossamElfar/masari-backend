@@ -179,6 +179,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('experts/cancel/{request_id}','API\ScheduleController@cancelTiming');
     /**
+     * Remove a request
+     */
+    Route::get('experts/remove/{request_id}','API\ScheduleController@removeTiming');
+    /**
      * Get user scores of an Assessment
      */
     Route::get('experts/scores/{user_code}','API\UserController@getScore');
