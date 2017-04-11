@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use \Validator;
 
 class ScheduleController extends Controller
@@ -54,8 +55,10 @@ class ScheduleController extends Controller
                 $timing_temp = Carbon::parse($timing->timing)->format('Y-m-d');
                 if ($date_temp == $timing_temp) {
                     $expert = $timing->expert()->get()[0];
-                    $timing['expert'] = $expert;
-                    array_push($timings_free, $timing);
+                    if (($expert->country == Input::get('country')) && ($expert->city == Input::get('city'))) {
+                        $timing['expert'] = $expert;
+                        array_push($timings_free, $timing);
+                    }
                 }
             }
             $data['date'] = $date;
@@ -122,7 +125,7 @@ class ScheduleController extends Controller
         $user = Auth::user();
         $requested_timings = $user->request_expert()->where('reserved', '!=', true)->get();
         foreach ($requested_timings as $timing) {
-            $timing['timing']= $timing->timing()->get()[0];
+            $timing['timing'] = $timing->timing()->get()[0];
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
@@ -140,7 +143,7 @@ class ScheduleController extends Controller
         $user = Auth::user();
         $approved_timings = $user->request_expert()->where('reserved', true)->get();
         foreach ($approved_timings as $timing) {
-            $timing['timing']= $timing->timing()->get()[0];
+            $timing['timing'] = $timing->timing()->get()[0];
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
@@ -166,7 +169,7 @@ class ScheduleController extends Controller
         } else {
             $request->reserved = true;
             $request->accepted = true;
-            $timing->reserved=true;
+            $timing->reserved = true;
             $request->save();
             $timing->save();
             $data1['statues'] = "200 Ok";

@@ -516,7 +516,7 @@ class UserController extends Controller
     }
 
     /**
-     * Add a field to the expert
+     * Add a field 
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -527,7 +527,6 @@ class UserController extends Controller
         $data = $request->all();
         $field = new Field($data);
         $field->save();
-        $user->fileds()->attach($field);
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data']['field'] = $field;
