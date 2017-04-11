@@ -98,6 +98,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::post('messages/thread/{id}', 'API\MessagesController@sendMessage');
     /**
+     * Delete user from a thread
+     */
+    Route::get('messages/delete/user/{thread_id}','API\MessagesController@deleteParticipant');
+    /**
      * Programmes resource
      */
     Route::resource('programs', 'API\ProgrammesController');
