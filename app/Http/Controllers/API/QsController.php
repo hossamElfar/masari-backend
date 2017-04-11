@@ -25,12 +25,17 @@ class QsController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $news = DB::table('qs')->orderBy('created_at', 'desc')->paginate(7)->toArray();
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         foreach ($news['data'] as $question) {
             $question1 = Q::find($question->id);
-            $answers = $question1->answers()->count();
+            if ($user->isNotA('client')){
+                $answers = $question1->answers()->count();
+            }else{
+                $answers = $question1->answers()->where('verified',true)->count();
+            }
             $question->no_of_answers = $answers;
             $question->asked_by = $question1->user()->get();
         }

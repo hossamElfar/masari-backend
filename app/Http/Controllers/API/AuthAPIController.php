@@ -107,7 +107,7 @@ class AuthAPIController extends Controller
 
     public function verify($token)
     {
-        $user = User::where('code', '=', $token)->first();
+        $user = User::where('code', '=', strtolower($token))->first();
         if ($user) {
             $user->confirmed = true;
             try {
