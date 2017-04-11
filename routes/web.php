@@ -185,7 +185,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Create a new field
      */
-    Route::post('experts/fields','API\UserController@addField');
+    Route::post('experts/create/fields','API\UserController@addField');
     /**
      * Remove a assessment the user has taken
      */
