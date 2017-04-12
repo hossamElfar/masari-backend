@@ -20,7 +20,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment');
+        $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment','storeMcqAssessment');
         $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment', 'getClients', 'addField');
         $this->middleware('admin')->only('removeUserAssessment');
     }
@@ -478,7 +478,7 @@ class UserController extends Controller
                 $question = Question::findOrFail($question_id);
                 $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "multi"]);
                 $grade->save();
-            
+
 
         }
         $questionnaire_out->user()->attach($user);
