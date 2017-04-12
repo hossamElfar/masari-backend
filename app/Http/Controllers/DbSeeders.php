@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use App\Question;
 use App\Questionnaire;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class DbSeeders extends Controller
     {
         $questionnaire = Questionnaire::find(2);
         $data = $request->all();
-        foreach ($data as $question){
+        foreach ($data as $question) {
             $question1 = new Question([
                 'question_content' => $question,
                 'category' => 'multi',
@@ -48,5 +49,40 @@ class DbSeeders extends Controller
         $data1['error'] = null;
         $data1['data'] = null;
         return $data1;
+    }
+
+    public function seedDecisionArabic(Request $request)
+    {
+        $questionnaire = Questionnaire::find(267);
+        $data = $request->all();
+        $question1 = new Question([
+            'question_content' => $data['data'][0],
+            'category' => 'decision',
+            'no_of_answers' => 4,
+            'questionnaire_id' => $questionnaire->id
+        ]);
+        $question1->save();
+      // dd($data['data']);
+        foreach ($data['data'] as $key=> $answer) {
+            if ($key >=1){
+                $answer_db = new Answer([
+                    'answer_content' => $answer,
+                    'question_id' => $question1->id,
+                    'points' => -1
+                ]);
+                $answer_db->save();
+            }
+        }
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return $data1;
+    }
+
+    public function seedDecisionArabicAnswers(Request $request)
+    {
+        $data = $request->all();
+        $question = Question::find($data['question_id']);
+
     }
 }
