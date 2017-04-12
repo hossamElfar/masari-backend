@@ -12,6 +12,7 @@ use App\Questionnaire;
 use App\User;
 use App\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Bouncer;
@@ -173,7 +174,7 @@ class AdminController extends Controller
                 'email' => $data['email'],
                 'country' => $data['country'],
                 'city' => $data['city'],
-                'gender'=>$data['gender'],
+                'gender' => $data['gender'],
                 'birth_date' => $data['birth_date'],
                 'password' => bcrypt($data['password']),
                 'code' => $confirmation_code,
@@ -195,10 +196,10 @@ class AdminController extends Controller
             'phone' => 'required|max:20',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
-            'birth_date'=>'required',
-            'gender'=>'required',
-            'city'=>'required',
-            'country'=>'required'
+            'birth_date' => 'required',
+            'gender' => 'required',
+            'city' => 'required',
+            'country' => 'required'
         ]);
     }
 
@@ -211,5 +212,22 @@ class AdminController extends Controller
         $user = $this->create($request->all());
         $user->assign('hadmin');
         return response()->json(['message' => '200 Ok', 'confirmation' => $user->code], 200);
+    }
+
+    /**
+     * Assign Expert 
+     *
+     * @param $user_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assignExpert($user_id)
+    {
+        $user = User::find($user_id);
+        $user->assign('expert');
+        $user->save();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
+        return response()->json($data, 200);
     }
 }

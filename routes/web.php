@@ -150,7 +150,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     /**
      * Get Requested meetings of a client
      */
-    Route::get('client/timings/approved','API\ScheduleController@getClientsRequestedMeetings');
+    Route::get('client/timings/requested','API\ScheduleController@getClientsRequestedMeetings');
     /**
      * Request a schedule meeting to an expert
      */
@@ -251,6 +251,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Register a new high admin
      */
     Route::post('admin/create/high','AdminController@registerHigh');
+    /**
+     * Register a new high admin
+     */
+    Route::get('admin/assign/expert/{user_id}','AdminController@assignExpert');
     /**
      * Seed arabic values assessment
      */
