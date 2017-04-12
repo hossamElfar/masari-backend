@@ -414,29 +414,20 @@ class UserController extends Controller
             $questionnaire_id = $grade['questionnaire_id'];
             $questionnare = Questionnaire::find($questionnaire_id);
             $answers = $grade['Answers'];
-            $flag = true;
+            $answer_content = $grade['answer_content'];
             $index_out = -1;
-//            foreach ($answers as $index => $answer) {
-//                if ($answer == -1) {
-//                    $flag = false;
-//                    $index_out = -1;
-//                    break;
-//                } else {
-//                    $index_out = $index;
-//                }
-//            }
-            if (!in_array(-1,$answers)) {
-                foreach ($grade['answer_content'] as $final) {
+            foreach ($answers as $key => $answer) {
+                if ($answer != -1){
                     $question = Question::findOrFail($question_id);
-                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' => $final]);
+                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' =>$answer_content[$key] ]);
                     $answer_db->save();
                     $question->answers()->save($answer_db);
                     $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
                     $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index_out, 'category' => "multi"]);
                     $grade->save();
                 }
-
             }
+
 
         }
         $questionnaire_out->user()->attach($user);
