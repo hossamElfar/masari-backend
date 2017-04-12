@@ -408,7 +408,6 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         $questionnaire_out = Questionnaire::find($data[0]['questionnaire_id']);
-        $questionnaire_out->user()->attach($user);
 
         foreach ($data as $grade) {
             $question_id = $grade['question_id'];
@@ -417,15 +416,16 @@ class UserController extends Controller
             $answers = $grade['Answers'];
             $flag = true;
             $index_out = -1;
-            foreach ($answers as $index => $answer) {
-                if ($answer == -1) {
-                    $flag = false;
-                    $index_out = -1;
-                } else {
-                    $index_out = $index;
-                }
-            }
-            if ($flag) {
+//            foreach ($answers as $index => $answer) {
+//                if ($answer == -1) {
+//                    $flag = false;
+//                    $index_out = -1;
+//                    break;
+//                } else {
+//                    $index_out = $index;
+//                }
+//            }
+            if (!in_array(-1,$answers)) {
                 foreach ($grade['answer_content'] as $final) {
                     $question = Question::findOrFail($question_id);
                     $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' => $final]);
@@ -439,6 +439,7 @@ class UserController extends Controller
             }
 
         }
+        $questionnaire_out->user()->attach($user);
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
