@@ -259,4 +259,8 @@ Route::group(['prefix' => 'api/v1'], function () {
      * Seed arabic values assessment
      */
     Route::post('seed/values/ar','DbSeeders@seedValuesArabic');
+    /**
+     * Seed english skills
+     */
+    Route::post('seed/skills/en','DbSeeders@seedSkillsEnglish');
 });
