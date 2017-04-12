@@ -468,16 +468,19 @@ class UserController extends Controller
         $data = $request->all();
         $questionnaire_out = new Questionnaire();
 
-        foreach ($data as $grade) {
-            $question_id = $grade['question_id'];
-            $questionnaire_id = $grade['questionnaire_id'];
-            $answer_id=$grade['answer_id'];
-            $questionnare = Questionnaire::find($questionnaire_id);
-            $questionnaire_out = $questionnare;
-            $answer = Answer::find($answer_id);
-            $question = Question::findOrFail($question_id);
-            $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "multi"]);
-            $grade->save();
+        foreach ($data as $key => $grade) {
+            if ($key > 0) {
+                $question_id = $grade['question_id'];
+                $questionnaire_id = $grade['questionnaire_id'];
+                $answer_id = $grade['answer_id'];
+                $questionnare = Questionnaire::find($questionnaire_id);
+                $questionnaire_out = $questionnare;
+                $answer = Answer::find($answer_id);
+                $question = Question::findOrFail($question_id);
+                $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "multi"]);
+                $grade->save();
+            }
+
         }
         $questionnaire_out->user()->attach($user);
         $data1['statues'] = "200 Ok";
