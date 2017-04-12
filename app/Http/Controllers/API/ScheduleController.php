@@ -16,7 +16,7 @@ class ScheduleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('getExperts', 'reserveExpert');
+        $this->middleware('auth')->only('getExperts', 'reserveExpert','getClientsApprovedMeetings','getClientsRequestedMeetings');
         $this->middleware('expert')->only('addTiming', 'requestedTiming', 'approvedTiming', 'approveTiming', 'getTimingsExpert');
         //$this->middleware('admin')->only('verify');
     }
