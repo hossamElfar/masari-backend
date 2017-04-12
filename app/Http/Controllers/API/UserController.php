@@ -478,8 +478,6 @@ class UserController extends Controller
                 $question = Question::findOrFail($question_id);
                 $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "multi"]);
                 $grade->save();
-
-
         }
         $questionnaire_out->user()->attach($user);
         $data1['statues'] = "200 Ok";
