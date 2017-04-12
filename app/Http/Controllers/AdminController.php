@@ -215,7 +215,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Assign Expert 
+     * Assign Expert
      *
      * @param $user_id
      * @return \Illuminate\Http\JsonResponse
@@ -225,6 +225,17 @@ class AdminController extends Controller
         $user = User::find($user_id);
         $user->assign('expert');
         $user->save();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
+        return response()->json($data, 200);
+    }
+
+    public function assignClient($user_id)
+    {
+        $user = User::find($user_id);
+        $role = Input::get('role');
+        $user->assign($role);
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data'] = null;
