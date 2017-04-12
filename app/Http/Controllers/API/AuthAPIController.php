@@ -59,9 +59,7 @@ class AuthAPIController extends Controller
             'first_name' => 'max:255',
             'second_name' => 'max:255',
             'phone' => 'max:20|unique:users',
-            'email' => 'email|max:255|unique:users',
-            'password' => 'hash:' . $data['password'],
-            'new_password' => 'required|different:password|confirmed'
+            'email' => 'email|max:255|unique:users'
         ]);
     }
 
