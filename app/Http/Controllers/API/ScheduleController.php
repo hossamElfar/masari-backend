@@ -261,7 +261,7 @@ class ScheduleController extends Controller
      */
     public function cancelTiming($request_id)
     {
-        $request = Request::find($request_id);
+        $request = \App\Request::find($request_id);
         $timing = $request->timing()->get()[0];
         $request->reserved = false;
         $request->accespted = false;
