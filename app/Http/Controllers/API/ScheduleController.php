@@ -264,7 +264,7 @@ class ScheduleController extends Controller
         $request = \App\Request::find($request_id);
         $timing = $request->timing()->get()[0];
         $request->reserved = false;
-        $request->accespted = false;
+        $request->accepted = false;
         $timing->requested = false;
         $timing->save();
         $request->save();
