@@ -426,7 +426,7 @@ class UserController extends Controller
                 }
             }
             if ($flag) {
-                foreach ($data['answer_content'] as $final) {
+                foreach ($grade['answer_content'] as $final) {
                     $question = Question::findOrFail($question_id);
                     $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' => $final]);
                     $answer_db->save();
