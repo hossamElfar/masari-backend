@@ -276,6 +276,13 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfAQuestionnare($assessmen_id);
                 return $data;
                 break;
+            case "decision":
+                $user = User::find($user_db->id);
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                $data['data']['scores'] = $user->getScoresOfMcqQuestionnaire($assessmen_id);
+                return $data;
+                break;
             case "values":
                 $user = User::find($user_db->id);
                 $data['statues'] = "200 Ok";

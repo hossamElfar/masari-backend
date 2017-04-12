@@ -130,10 +130,10 @@ class User extends Authenticatable
             $returned[$grade->category] = $returned[$grade->category] + $grade->score;
         }
         foreach ($returned as $key => $value) {
-           $d = [];
-            $d['category']= $key;
+            $d = [];
+            $d['category'] = $key;
             $d['score'] = $value;
-            array_push($returned1,$d);
+            array_push($returned1, $d);
         }
         return $returned1;
     }
@@ -224,6 +224,17 @@ class User extends Authenticatable
     }
 
     public function getScoresOfTextQuestionnare($id)
+    {
+        $questionnaire = Questionnaire::find($id);
+        $values = $questionnaire->grades()->where('user_id', $this->id)->get();
+        foreach ($values as $value) {
+            $value['answer_content'] = $value->answer()->get()[0];
+            $value['question'] = $value->answer()->get()[0]->question()->get()[0];
+        }
+        return $values;
+    }
+
+    public function getScoresOfMcqQuestionnaire($id)
     {
         $questionnaire = Questionnaire::find($id);
         $values = $questionnaire->grades()->where('user_id', $this->id)->get();
