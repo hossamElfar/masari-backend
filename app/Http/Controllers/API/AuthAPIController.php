@@ -296,10 +296,10 @@ class AuthAPIController extends Controller
 
         $user->password = Hash::make($data['new_password']);
         $user->save();
-        $data['statues'] = "200 Ok";
-        $data['error'] = null;
-        $data['data'] = null;
-        return response()->json($data, 200);
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
     }
 
     /**
