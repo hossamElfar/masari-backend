@@ -21,7 +21,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->only('show', 'getAssessmentsNames', 'getAssessment', 'storeAssessment', 'storeValuesAssessment', 'storeValuesAssessmentSorted', 'storeMultiAssessment', 'storeTextAssessment', 'storeKteerAssessment');
-        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment', 'getClients','addField');
+        $this->middleware('expert')->only('getScore', 'getAnswers', 'getUserAssessment', 'getClients', 'addField');
         $this->middleware('admin')->only('removeUserAssessment');
     }
 
@@ -415,18 +415,29 @@ class UserController extends Controller
             $questionnaire_id = $grade['questionnaire_id'];
             $questionnare = Questionnaire::find($questionnaire_id);
             $answers = $grade['Answers'];
+            $flag = true;
+            $index_out = -1;
             foreach ($answers as $index => $answer) {
-                if ($answer != -1) {
-                    $question = Question::findOrFail($question_id);
-                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index, 'answer_content' => 'multi assessment']);
-                    $answer_db->save();
-
-                    $question->answers()->save($answer_db);
-                    $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
-                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index, 'category' => "multi"]);
-                    $grade->save();
+                if ($answer == -1) {
+                    $flag = false;
+                    $index_out = -1;
+                } else {
+                    $index_out = $index;
                 }
             }
+            if ($flag) {
+                foreach ($data['answer_content'] as $final) {
+                    $question = Question::findOrFail($question_id);
+                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' => $final]);
+                    $answer_db->save();
+                    $question->answers()->save($answer_db);
+                    $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
+                    $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer_db->id, 'questionnaire_id' => $questionnare->id, 'score' => $index_out, 'category' => "multi"]);
+                    $grade->save();
+                }
+
+            }
+
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
@@ -516,7 +527,7 @@ class UserController extends Controller
     }
 
     /**
-     * Add a field 
+     * Add a field
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
