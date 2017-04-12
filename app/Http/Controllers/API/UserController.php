@@ -90,6 +90,17 @@ class UserController extends Controller
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
+            case "decision":
+                $questions = $assessment->questions()->get();
+                $data['statues'] = "200 Ok";
+                $data['error'] = null;
+                foreach ($questions as $question) {
+                    $answers = $question->answers()->get();
+                    $question['answers'] = $answers;
+                }
+                $data['data']['questions'] = $questions;
+                return $data;
+                break;
             case "values":
                 $questions = $assessment->questions()->get();
                 $data['statues'] = "200 Ok";
