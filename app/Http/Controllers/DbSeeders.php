@@ -53,7 +53,7 @@ class DbSeeders extends Controller
 
     public function seedDecisionArabic(Request $request)
     {
-        $questionnaire = Questionnaire::find(267);
+        $questionnaire = Questionnaire::find(3);
         $data = $request->all();
         $question1 = new Question([
             'question_content' => $data['data'][0],
