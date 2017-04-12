@@ -417,9 +417,9 @@ class UserController extends Controller
             $answer_content = $grade['answer_content'];
             $index_out = -1;
             foreach ($answers as $key => $answer) {
-                if ($answer != -1){
+                if ($answer != -1) {
                     $question = Question::findOrFail($question_id);
-                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' =>$answer_content[$key] ]);
+                    $answer_db = new Answer(['question_id' => $question_id, 'points' => $index_out, 'answer_content' => $answer_content[$key]]);
                     $answer_db->save();
                     $question->answers()->save($answer_db);
                     $questionnare->answers()->attach($answer_db, ["user_id" => $user->id, 'answer_id' => $answer_db->id]);
@@ -429,6 +429,37 @@ class UserController extends Controller
             }
 
 
+        }
+        $questionnaire_out->user()->attach($user);
+        $data1['statues'] = "200 Ok";
+        $data1['error'] = null;
+        $data1['data'] = null;
+        return response()->json($data1, 200);
+    }
+
+    /**
+     * Store multi valued assessment
+     *
+     * @param Request $request
+     * @return array
+     */
+
+    public function storeMcqAssessment(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        $questionnaire_out = new Questionnaire();
+
+        foreach ($data as $grade) {
+            $question_id = $grade['question_id'];
+            $questionnaire_id = $grade['questionnaire_id'];
+            $answer_id=$grade['answer_id'];
+            $questionnare = Questionnaire::find($questionnaire_id);
+            $questionnaire_out = $questionnare;
+            $answer = Answer::find($answer_id);
+            $question = Question::findOrFail($question_id);
+            $grade = new Grade(['user_id' => $user->id, 'answer_id' => $answer->id, 'questionnaire_id' => $questionnare->id, 'score' => -1, 'category' => "multi"]);
+            $grade->save();
         }
         $questionnaire_out->user()->attach($user);
         $data1['statues'] = "200 Ok";
