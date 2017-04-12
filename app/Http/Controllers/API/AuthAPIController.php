@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Mockery\CountValidator\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -32,7 +33,7 @@ class AuthAPIController extends Controller
     public function __construct()
     {
         //$this->middleware('guest', ['except' => 'logout']);
-        $this->middleware('auth')->only('update', 'upload');
+        $this->middleware('auth')->only('update', 'upload','updatePassword');
     }
 
     /**
@@ -58,7 +59,17 @@ class AuthAPIController extends Controller
             'first_name' => 'max:255',
             'second_name' => 'max:255',
             'phone' => 'max:20|unique:users',
-            'email' => 'email|max:255|unique:users'
+            'email' => 'email|max:255|unique:users',
+            'password' => 'hash:' . $data['password'],
+            'new_password' => 'required|different:password|confirmed'
+        ]);
+    }
+
+    protected function validatorPassword(array $data)
+    {
+        return Validator::make($data, [
+            'password' => 'hash:' . $data['password'],
+            'new_password' => 'required|different:password|confirmed'
         ]);
     }
 
@@ -233,11 +244,11 @@ class AuthAPIController extends Controller
     {
         $user = Auth::user();
         $t = $request->intersect(['first_name', 'second_name', 'phone', 'country', 'city', 'age', 'gender', 'pp']);
-        if ($t['country']){
-            $t['country']= strtolower($t['country']);
+        if ($t['country']) {
+            $t['country'] = strtolower($t['country']);
         }
-        if ($t['city']){
-            $t['city']= strtolower($t['city']);
+        if ($t['city']) {
+            $t['city'] = strtolower($t['city']);
         }
         // dd($t);
         //$t = $request->all();
@@ -264,6 +275,30 @@ class AuthAPIController extends Controller
         $data['statues'] = "200 Ok";
         $data['error'] = null;
         $data['data'] = $user;
+        return response()->json($data, 200);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->all();
+        $validation = Validator::make($data, [
+            'password' => 'hash:' . $user->password,
+            'new_password' => 'required|different:password|confirmed'
+        ]);
+
+        if ($validation->fails()) {
+            $data1['statues'] = "302 Ok";
+            $data1['error'] = "couldn't update password";
+            $data1['data'] = $validation->errors();
+            return response()->json($data1, 302);
+        }
+
+        $user->password = Hash::make($data['new_password']);
+        $user->save();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
         return response()->json($data, 200);
     }
 

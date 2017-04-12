@@ -28,6 +28,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::post('login', 'API\AuthAPIController@login');
     Route::post('logout', 'API\AuthAPIController@logout');
     Route::post('update', 'API\AuthAPIController@update');
+    Route::post('update/password','API\AuthAPIController@updatePassword');
     Route::any('upload','API\AuthAPIController@upload');
     /**
      * View profile API
