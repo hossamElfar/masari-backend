@@ -53,13 +53,13 @@ class DbSeeders extends Controller
 
     public function seedDecisionArabic(Request $request)
     {
-        $questionnaire = Questionnaire::create(["name"=>"استراتيجيات اتخاذ القرار","no_of_questions"=>4,"language"=>"ar"]);
+        $questionnaire = Questionnaire::create(["name"=>"Decision Making Strategy","no_of_questions"=>4,"language"=>"en"]);
         $questionnaire->type="decision";
         $questionnaire->save();
         $data = $request->all();
         $question1 = new Question([
             'question_content' => $data['data'][0],
-            'category' => 'استراتيجيات اتخاذ القرار',
+            'category' => 'Decision Making Strategy',
             'no_of_answers' => 4,
             'questionnaire_id' => $questionnaire->id
         ]);
