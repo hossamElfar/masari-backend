@@ -17,7 +17,7 @@ class DbSeeders extends Controller
      */
     public function seedValuesArabic(Request $request)
     {
-        $questionnaire = Questionnaire::create(["name"=>"المشاعر","no_of_questions"=>4,"language"=>"ar"]);
+        $questionnaire = Questionnaire::create(["name"=>"feelings","no_of_questions"=>4,"language"=>"en"]);
         $questionnaire->type="feelings";
         $questionnaire->save();
         $data_raw = $request->all();
@@ -25,7 +25,7 @@ class DbSeeders extends Controller
         foreach ($data as $question){
             $question1 = new Question([
                 'question_content' => $question,
-                'category' => 'ماهو الأحساس الذى تشعر به عند التفكير فى إتخاذ القرار المهنى؟ ولماذا ؟',
+                'category' => 'Discover your feelings',
                 'no_of_answers' => 4,
                 'questionnaire_id' => $questionnaire->id
             ]);
