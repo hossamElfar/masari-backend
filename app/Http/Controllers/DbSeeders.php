@@ -40,14 +40,19 @@ class DbSeeders extends Controller
         $data_raw = $request->all();
         $data = $data_raw['data'];
         foreach ($data as $question) {
-            $question1 = new Question([
-                'question_content' => $question['content'],
-                'category' => $question['category'],
-                'no_of_answers' => 4,
-                'questionnaire_id' => $questionnaire->id,
-                'title'=>$question['title']
-            ]);
-            $question1->save();
+            try{
+                $question1 = new Question([
+                    'question_content' => $question['content'],
+                    'category' => $question['category'],
+                    'no_of_answers' => 4,
+                    'questionnaire_id' => $questionnaire->id,
+                    'title'=>$question['title']
+                ]);
+                $question1->save();
+            }catch (\Exception $e){
+                dd($question);
+            }
+
         }
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
