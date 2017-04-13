@@ -115,7 +115,7 @@ class UserController extends Controller
                 $data['data']['questions'] = $questions;
                 return $data;
                 break;
-            case "text":
+            case "feelings":
                 $questions = $assessment->questions()->get();
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
