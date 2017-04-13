@@ -17,15 +17,21 @@ class DbSeeders extends Controller
      */
     public function seedValuesArabic(Request $request)
     {
-        $questionnaire = Questionnaire::find(1);
-        $data = $request->all();
-        $question = new Question([
-            'question_content' => $data['content'],
-            'category' => $data['category'],
-            'no_of_answers' => 4,
-            'questionnaire_id' => $questionnaire->id
-        ]);
-        $question->save();
+        $questionnaire = Questionnaire::create(["name"=>"القيم","no_of_questions"=>4,"language"=>"ar"]);
+        $questionnaire->type="values";
+        $questionnaire->save();
+        $data_raw = $request->all();
+        $data = $data_raw['data'];
+        foreach ($data as $question){
+            $question1 = new Question([
+                'question_content' => $question['content'],
+                'category' => $question['category'],
+                'no_of_answers' => 4,
+                'questionnaire_id' => $questionnaire->id
+            ]);
+            $question1->save();
+        }
+
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
