@@ -301,7 +301,7 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfValuesQuestionnareSorted($assessmen_id);
                 return $data;
                 break;
-            case "multi":
+            case "skills":
                 $user = User::find($user_db->id);
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
