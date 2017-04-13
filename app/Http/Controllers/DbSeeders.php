@@ -34,7 +34,7 @@ class DbSeeders extends Controller
 
     public function seedSkillsEnglish(Request $request)
     {
-        $questionnaire = Questionnaire::create(["name"=>"مهارات","no_of_questions"=>4,"language"=>"ar"]);
+        $questionnaire = Questionnaire::create(["name"=>"Skills","no_of_questions"=>4,"language"=>"en"]);
         $questionnaire->type="skills";
         $questionnaire->save();
         $data_raw = $request->all();
@@ -46,7 +46,7 @@ class DbSeeders extends Controller
                     'category' => $question['category'],
                     'no_of_answers' => 4,
                     'questionnaire_id' => $questionnaire->id,
-                    'title'=>$question['title']
+                    'title'=>'some title'
                 ]);
                 $question1->save();
             }catch (\Exception $e){
