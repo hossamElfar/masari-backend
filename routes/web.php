@@ -264,6 +264,10 @@ Route::group(['prefix' => 'api/v1'], function () {
      */
     Route::get('admin/assign/client/{user_id}','AdminController@assignClient');
     /**
+     * Set client level
+     */
+    Route::get('admin/delete/client/{user_id}','AdminController@deleteClient');
+    /**
      * Seed arabic values assessment
      */
     Route::post('seed/values/ar','DbSeeders@seedValuesArabic');

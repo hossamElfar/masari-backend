@@ -241,4 +241,14 @@ class AdminController extends Controller
         $data['data'] = null;
         return response()->json($data, 200);
     }
+
+    public function deleteClient($user_id)
+    {
+        $user = User::find($user_id);
+        $user->delete();
+        $data['statues'] = "200 Ok";
+        $data['error'] = null;
+        $data['data'] = null;
+        return response()->json($data, 200);
+    }
 }
