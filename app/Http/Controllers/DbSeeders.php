@@ -17,15 +17,15 @@ class DbSeeders extends Controller
      */
     public function seedValuesArabic(Request $request)
     {
-        $questionnaire = Questionnaire::create(["name"=>"القيم","no_of_questions"=>4,"language"=>"ar"]);
-        $questionnaire->type="values";
+        $questionnaire = Questionnaire::create(["name"=>"المشاعر","no_of_questions"=>4,"language"=>"ar"]);
+        $questionnaire->type="feelings";
         $questionnaire->save();
         $data_raw = $request->all();
         $data = $data_raw['data'];
         foreach ($data as $question){
             $question1 = new Question([
-                'question_content' => $question['content'],
-                'category' => $question['category'],
+                'question_content' => $question,
+                'category' => 'ماهو الأحساس الذى تشعر به عند التفكير فى إتخاذ القرار المهنى؟ ولماذا ؟',
                 'no_of_answers' => 4,
                 'questionnaire_id' => $questionnaire->id
             ]);
