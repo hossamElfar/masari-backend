@@ -315,7 +315,7 @@ class UserController extends Controller
                 $data['data']['scores'] = $user->getScoresOfKteerQuestionnare($assessmen_id);
                 return $data;
                 break;
-            case "text":
+            case "feelings":
                 $user = User::find($user_db->id);
                 $data['statues'] = "200 Ok";
                 $data['error'] = null;
@@ -529,7 +529,7 @@ class UserController extends Controller
         $user = Auth::user();
         $data = $request->all();
         $questionnaire = Questionnaire::findOrFail($data['questionnaire_id']);
-        $questionnaire->user()->attach($user);
+
         $question_id = $data['question_id'];
         foreach ($data['Answers'] as $index => $answer) {
             if ($answer != -1) {
@@ -541,6 +541,7 @@ class UserController extends Controller
                 $grade->save();
             }
         }
+        $questionnaire->user()->attach($user);
         $data1['statues'] = "200 Ok";
         $data1['error'] = null;
         $data1['data'] = null;
